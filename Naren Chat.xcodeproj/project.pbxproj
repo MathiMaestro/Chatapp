@@ -7,23 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F4408D1828CEC009009DAD2F /* NCLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4408D1728CEC009009DAD2F /* NCLoginButton.swift */; };
+		F4408D1B28CEC8F6009DAD2F /* NCSignupLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4408D1A28CEC8F6009DAD2F /* NCSignupLabel.swift */; };
 		F44555D328CC01CF00C56D82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555D228CC01CF00C56D82 /* AppDelegate.swift */; };
 		F44555D528CC01CF00C56D82 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555D428CC01CF00C56D82 /* SceneDelegate.swift */; };
-		F44555D728CC01CF00C56D82 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555D628CC01CF00C56D82 /* ViewController.swift */; };
-		F44555DA28CC01CF00C56D82 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F44555D828CC01CF00C56D82 /* Main.storyboard */; };
 		F44555DC28CC01D000C56D82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F44555DB28CC01D000C56D82 /* Assets.xcassets */; };
 		F44555DF28CC01D000C56D82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F44555DD28CC01D000C56D82 /* LaunchScreen.storyboard */; };
+		F44555E928CCCF2100C56D82 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555E828CCCF2100C56D82 /* LoginViewController.swift */; };
+		F44555ED28CCD7C700C56D82 /* NCTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555EC28CCD7C700C56D82 /* NCTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F4408D1728CEC009009DAD2F /* NCLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLoginButton.swift; sourceTree = "<group>"; };
+		F4408D1A28CEC8F6009DAD2F /* NCSignupLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSignupLabel.swift; sourceTree = "<group>"; };
 		F44555CF28CC01CF00C56D82 /* Naren Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Naren Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F44555D228CC01CF00C56D82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F44555D428CC01CF00C56D82 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F44555D628CC01CF00C56D82 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		F44555D928CC01CF00C56D82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F44555DB28CC01D000C56D82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F44555DE28CC01D000C56D82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F44555E028CC01D000C56D82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F44555E828CCCF2100C56D82 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		F44555EC28CCD7C700C56D82 /* NCTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +41,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F4408D1628CEBFCC009DAD2F /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				F4408D1728CEC009009DAD2F /* NCLoginButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		F4408D1928CEC8DB009DAD2F /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				F4408D1A28CEC8F6009DAD2F /* NCSignupLabel.swift */,
+			);
+			path = Labels;
+			sourceTree = "<group>";
+		};
 		F44555C628CC01CF00C56D82 = {
 			isa = PBXGroup;
 			children = (
@@ -56,15 +76,49 @@
 		F44555D128CC01CF00C56D82 /* Naren Chat */ = {
 			isa = PBXGroup;
 			children = (
-				F44555D228CC01CF00C56D82 /* AppDelegate.swift */,
-				F44555D428CC01CF00C56D82 /* SceneDelegate.swift */,
-				F44555D628CC01CF00C56D82 /* ViewController.swift */,
-				F44555D828CC01CF00C56D82 /* Main.storyboard */,
-				F44555DB28CC01D000C56D82 /* Assets.xcassets */,
-				F44555DD28CC01D000C56D82 /* LaunchScreen.storyboard */,
+				F44555EA28CCD78900C56D82 /* CustomViews */,
+				F44555E728CCCEE100C56D82 /* Support */,
+				F44555E628CCCEC400C56D82 /* Screens */,
 				F44555E028CC01D000C56D82 /* Info.plist */,
 			);
 			path = "Naren Chat";
+			sourceTree = "<group>";
+		};
+		F44555E628CCCEC400C56D82 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				F44555E828CCCF2100C56D82 /* LoginViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		F44555E728CCCEE100C56D82 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				F44555D228CC01CF00C56D82 /* AppDelegate.swift */,
+				F44555D428CC01CF00C56D82 /* SceneDelegate.swift */,
+				F44555DB28CC01D000C56D82 /* Assets.xcassets */,
+				F44555DD28CC01D000C56D82 /* LaunchScreen.storyboard */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		F44555EA28CCD78900C56D82 /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				F4408D1928CEC8DB009DAD2F /* Labels */,
+				F4408D1628CEBFCC009DAD2F /* Buttons */,
+				F44555EB28CCD79100C56D82 /* TextFields */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		F44555EB28CCD79100C56D82 /* TextFields */ = {
+			isa = PBXGroup;
+			children = (
+				F44555EC28CCD7C700C56D82 /* NCTextField.swift */,
+			);
+			path = TextFields;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +181,6 @@
 			files = (
 				F44555DF28CC01D000C56D82 /* LaunchScreen.storyboard in Resources */,
 				F44555DC28CC01D000C56D82 /* Assets.xcassets in Resources */,
-				F44555DA28CC01CF00C56D82 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,23 +191,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F44555D728CC01CF00C56D82 /* ViewController.swift in Sources */,
+				F4408D1828CEC009009DAD2F /* NCLoginButton.swift in Sources */,
+				F44555E928CCCF2100C56D82 /* LoginViewController.swift in Sources */,
 				F44555D328CC01CF00C56D82 /* AppDelegate.swift in Sources */,
+				F44555ED28CCD7C700C56D82 /* NCTextField.swift in Sources */,
 				F44555D528CC01CF00C56D82 /* SceneDelegate.swift in Sources */,
+				F4408D1B28CEC8F6009DAD2F /* NCSignupLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		F44555D828CC01CF00C56D82 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F44555D928CC01CF00C56D82 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		F44555DD28CC01D000C56D82 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -292,9 +340,10 @@
 				INFOPLIST_FILE = "Naren Chat/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,7 +353,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -320,9 +369,10 @@
 				INFOPLIST_FILE = "Naren Chat/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -332,7 +382,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
