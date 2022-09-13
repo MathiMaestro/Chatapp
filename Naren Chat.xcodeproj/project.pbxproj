@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F4292D7928D114B70025F98F /* NCAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4292D7828D114B70025F98F /* NCAPI.swift */; };
+		F4292D7C28D139A30025F98F /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4292D7B28D139A30025F98F /* NetworkManager.swift */; };
+		F4292D7F28D13ACA0025F98F /* NCError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4292D7E28D13ACA0025F98F /* NCError.swift */; };
 		F4408D1828CEC009009DAD2F /* NCLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4408D1728CEC009009DAD2F /* NCLoginButton.swift */; };
 		F4408D1B28CEC8F6009DAD2F /* NCSignupLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4408D1A28CEC8F6009DAD2F /* NCSignupLabel.swift */; };
 		F44555D328CC01CF00C56D82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555D228CC01CF00C56D82 /* AppDelegate.swift */; };
@@ -18,6 +21,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F4292D7828D114B70025F98F /* NCAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAPI.swift; sourceTree = "<group>"; };
+		F4292D7B28D139A30025F98F /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		F4292D7E28D13ACA0025F98F /* NCError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCError.swift; sourceTree = "<group>"; };
 		F4408D1728CEC009009DAD2F /* NCLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLoginButton.swift; sourceTree = "<group>"; };
 		F4408D1A28CEC8F6009DAD2F /* NCSignupLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSignupLabel.swift; sourceTree = "<group>"; };
 		F44555CF28CC01CF00C56D82 /* Naren Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Naren Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -41,6 +47,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F4292D7728D114990025F98F /* Modal */ = {
+			isa = PBXGroup;
+			children = (
+				F4292D7828D114B70025F98F /* NCAPI.swift */,
+			);
+			path = Modal;
+			sourceTree = "<group>";
+		};
+		F4292D7A28D139910025F98F /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				F4292D7B28D139A30025F98F /* NetworkManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		F4292D7D28D13AAC0025F98F /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				F4292D7E28D13ACA0025F98F /* NCError.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		F4408D1628CEBFCC009DAD2F /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
@@ -76,6 +106,9 @@
 		F44555D128CC01CF00C56D82 /* Naren Chat */ = {
 			isa = PBXGroup;
 			children = (
+				F4292D7D28D13AAC0025F98F /* Utilities */,
+				F4292D7A28D139910025F98F /* Managers */,
+				F4292D7728D114990025F98F /* Modal */,
 				F44555EA28CCD78900C56D82 /* CustomViews */,
 				F44555E728CCCEE100C56D82 /* Support */,
 				F44555E628CCCEC400C56D82 /* Screens */,
@@ -191,12 +224,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4292D7928D114B70025F98F /* NCAPI.swift in Sources */,
 				F4408D1828CEC009009DAD2F /* NCLoginButton.swift in Sources */,
 				F44555E928CCCF2100C56D82 /* LoginViewController.swift in Sources */,
 				F44555D328CC01CF00C56D82 /* AppDelegate.swift in Sources */,
+				F4292D7C28D139A30025F98F /* NetworkManager.swift in Sources */,
 				F44555ED28CCD7C700C56D82 /* NCTextField.swift in Sources */,
 				F44555D528CC01CF00C56D82 /* SceneDelegate.swift in Sources */,
 				F4408D1B28CEC8F6009DAD2F /* NCSignupLabel.swift in Sources */,
+				F4292D7F28D13ACA0025F98F /* NCError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

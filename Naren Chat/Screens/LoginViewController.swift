@@ -28,6 +28,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         configureUI()
+        configureTap()
     }
     
     private func configureUI() {
@@ -60,6 +61,24 @@ class LoginViewController: UIViewController {
             signupDescriptionLabel.bottomAnchor.constraint(equalTo: signupLabel.topAnchor, constant: -10),
             signupDescriptionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+    }
+    
+    func configureTap() {
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        let signUpTap = UITapGestureRecognizer(target: self, action: #selector(signUpButtonTapped))
+        signupLabel.addGestureRecognizer(signUpTap)
+    }
+    
+    @objc func loginButtonTapped() {
+        let username = usernameTextField.text ?? ""
+        let password = passwordTextField.text ?? ""
+        NetworkManager.shared.login(with: username, password: password) { result in
+            print(result)
+        }
+    }
+    
+    @objc func signUpButtonTapped() {
+        
     }
     
 }
