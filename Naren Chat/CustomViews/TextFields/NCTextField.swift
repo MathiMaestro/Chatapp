@@ -14,29 +14,33 @@ class NCTextField: UITextField {
         configureProperties()
     }
     
-    convenience init(placeHolderName: String, isPassword: Bool) {
+    convenience init(placeHolderName: String) {
         self.init(frame: .zero)
-        configureProperty(with: placeHolderName, isPassword: isPassword)
+        configurePropertyWith(placeHolderName: placeHolderName)
     }
     
     private func configureProperties() {
         translatesAutoresizingMaskIntoConstraints = false
         
-        layer.cornerRadius  = 10
-        layer.borderWidth   = 2
-        layer.borderColor   = UIColor.systemGray4.cgColor
-        
-        textColor           = .label
-        tintColor           = .label
-        textAlignment       = .center
-        
-        backgroundColor     = .tertiarySystemBackground
-        autocorrectionType  = .no
-        clearButtonMode     = .whileEditing
+        layer.cornerRadius      = 10
+        layer.borderWidth       = 2
+        layer.borderColor       = UIColor.systemGray4.cgColor
+            
+        textColor               = .label
+        tintColor               = .label
+        textAlignment           = .center
+            
+        backgroundColor         = .tertiarySystemBackground
+        autocorrectionType      = .no
+        clearButtonMode         = .whileEditing
+        autocapitalizationType  = .none
     }
     
-    private func configureProperty(with placeHolderName: String, isPassword: Bool) {
+    private func configurePropertyWith(placeHolderName: String) {
         attributedPlaceholder   = NSAttributedString(string: placeHolderName, attributes: [NSAttributedString.Key.foregroundColor : UIColor.placeholderText])
+    }
+    
+    func configureProperty(forPassowrd isPassword : Bool) {
         isSecureTextEntry   = isPassword
     }
     

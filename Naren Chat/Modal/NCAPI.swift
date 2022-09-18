@@ -10,6 +10,8 @@ import Foundation
 enum APIType {
     case login
     case register
+    case checkUsername
+    case checkEmailId
 }
 
 class NCAPI {
@@ -22,9 +24,13 @@ class NCAPI {
         
         switch type {
         case .login:
-            api += "/user/check"
+            api += "/login"
         case .register:
             api += "/register"
+        case .checkUsername:
+            api += "/user/check?user_name="
+        case .checkEmailId:
+            api += "/user/check?email_id="
         }
         
         return api

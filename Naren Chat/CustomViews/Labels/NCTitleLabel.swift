@@ -1,40 +1,40 @@
 //
-//  NCSignupLabel.swift
+//  NCTitleLabel.swift
 //  Naren Chat
 //
-//  Created by Mathiyalagan S on 12/09/22.
+//  Created by Mathiyalagan S on 18/09/22.
 //
 
 import UIKit
 
-class NCBodyLabel: UILabel {
+class NCTitleLabel: UILabel {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureProperties()
     }
     
-    convenience init(textColor: UIColor, textAlignment: NSTextAlignment) {
-        self.init(frame: .zero)
-        set(textColor: textColor, textAlignment: textAlignment)
-    }
-    
-    convenience init(textColor: UIColor, textAlignment: NSTextAlignment, title: String) {
+    convenience init(textColor: UIColor,textAlignment: NSTextAlignment, title: String) {
         self.init(frame: .zero)
         set(textColor: textColor, textAlignment: textAlignment)
         setTitle(with: title)
     }
     
+    convenience init(textColor: UIColor,textAlignment: NSTextAlignment) {
+        self.init(frame: .zero)
+        set(textColor: textColor, textAlignment: textAlignment)
+    }
+    
     private func configureProperties() {
         translatesAutoresizingMaskIntoConstraints = false
         
-        font                        = .preferredFont(forTextStyle: .body)
+        font                        = .preferredFont(forTextStyle: .title3)
         adjustsFontSizeToFitWidth   = true
         minimumScaleFactor          = 0.9
         lineBreakMode               = .byTruncatingTail
     }
     
-    private func set(textColor: UIColor, textAlignment: NSTextAlignment) {
+    private func set(textColor: UIColor,textAlignment: NSTextAlignment) {
         self.textColor      = textColor
         self.textAlignment  = textAlignment
     }
@@ -46,4 +46,5 @@ class NCBodyLabel: UILabel {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 }

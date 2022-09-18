@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NCLoginButton: UIButton {
+class NCButton: UIButton {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -16,7 +16,13 @@ class NCLoginButton: UIButton {
     
     convenience init(buttonTitle: String, buttonColor: UIColor) {
         self.init(frame: .zero)
-        set(title: buttonTitle, buttonColor: buttonColor)
+        set(title: buttonTitle)
+        set(buttonColor: buttonColor)
+    }
+    
+    convenience init(buttonColor: UIColor) {
+        self.init(frame: .zero)
+        set(buttonColor: buttonColor)
     }
     
     private func configureUI() {
@@ -27,9 +33,12 @@ class NCLoginButton: UIButton {
         setTitleColor(.white, for: .normal)
     }
     
-    private func set(title: String, buttonColor: UIColor) {
-        setTitle(title, for: .normal)
+    func set(buttonColor: UIColor) {
         backgroundColor = buttonColor
+    }
+    
+    func set(title: String) {
+        setTitle(title, for: .normal)
     }
     
     required init?(coder: NSCoder) {
