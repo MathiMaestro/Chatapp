@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: NCLoadingVC {
 
     private let loginView   = LoginView(isSignUp: false)
     private let signupView  = LoginView(isSignUp: true)
@@ -32,19 +32,17 @@ class LoginViewController: UIViewController {
     }
 }
 
-extension LoginViewController : LoginViewToVC {
-    
-    func actionButtonTapped() {
-        isLoginEnabled ? login() : signup()
-    }
+extension LoginViewController {
     
     private func login() {
         let username = loginView.getUsernameText() ?? ""
         let password = loginView.getPasswordText() ?? ""
-        NetworkManager.shared.login(with: username, password: password) { result in
+        LoginNetworkManager.shared.login(with: username, password: password) { result in
+            self.dismissLoadingView()
             switch result {
             case .success(let token):
-                print(token)
+                PersistenceManager.token = token
+                self.presentChatListView()
             case .failure(let error):
                 self.presentNCAlertViewInMainThread(title: "Oops..", message: error.rawValue, buttonTitle: "Ok")
             }
@@ -55,7 +53,8 @@ extension LoginViewController : LoginViewToVC {
         let username = signupView.getUsernameText() ?? ""
         let password = signupView.getPasswordText() ?? ""
         let emailId = signupView.getEmailIdText() ?? ""
-        NetworkManager.shared.signupWith(username: username, emailId: emailId, password: password) { result in
+        LoginNetworkManager.shared.signupWith(username: username, emailId: emailId, password: password) { result in
+            self.dismissLoadingView()
             switch result {
             case .success(_):
                 self.presentNCAlertViewInMainThread(title: "Hurray!", message: NCError.registerSuccess.rawValue, buttonTitle: "Ok")
@@ -63,6 +62,21 @@ extension LoginViewController : LoginViewToVC {
                 self.presentNCAlertViewInMainThread(title: "Oops..", message: error.rawValue, buttonTitle: "Ok")
             }
         }
+    }
+    
+    private func presentChatListView() {
+        DispatchQueue.main.async {
+            let chatListVC = ChatListVC()
+            self.navigationController?.pushViewController(chatListVC, animated: true)
+        }
+    }
+}
+
+extension LoginViewController : LoginViewToVC {
+    
+    func actionButtonTapped() {
+        showLoadingView()
+        isLoginEnabled ? login() : signup()
     }
     
     func actionLabelTapped() {

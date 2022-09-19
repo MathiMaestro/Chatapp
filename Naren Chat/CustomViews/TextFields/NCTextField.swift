@@ -34,15 +34,39 @@ class NCTextField: UITextField {
         autocorrectionType      = .no
         clearButtonMode         = .whileEditing
         autocapitalizationType  = .none
+        isSecureTextEntry       = false
     }
     
     private func configurePropertyWith(placeHolderName: String) {
         attributedPlaceholder   = NSAttributedString(string: placeHolderName, attributes: [NSAttributedString.Key.foregroundColor : UIColor.placeholderText])
     }
     
-    func configureProperty(forPassowrd isPassword : Bool) {
-        isSecureTextEntry   = isPassword
+    func configurePropertyForPassword() {
+        setupVisiblityButton()
     }
+    
+    private func setupVisiblityButton() {
+        self.isSecureTextEntry  = true
+        let button              = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        button.contentMode      = .center
+        
+        button.setImage(UIImage(systemName: "eye.slash"), for: .normal)
+        button.setImage(UIImage(systemName: "eye"), for: .selected)
+    
+        rightView       = button
+        rightViewMode   = .always
+    
+        button.addTarget(self, action: #selector(showHidePassword(_:)), for: .touchUpInside)
+    }
+        
+    @objc private func showHidePassword(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        self.isSecureTextEntry = !sender.isSelected
+    }
+    
+    override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
+        return CGRect(x: bounds.width - 40, y: 0, width: 30 , height: bounds.height)
+        }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

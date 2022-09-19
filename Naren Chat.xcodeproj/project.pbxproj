@@ -15,6 +15,11 @@
 		F43C641F28D69E6100E62E43 /* NCAlertContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C641E28D69E6100E62E43 /* NCAlertContainerView.swift */; };
 		F43C642128D69E8B00E62E43 /* NCTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C642028D69E8B00E62E43 /* NCTitleLabel.swift */; };
 		F43C642328D6A2F000E62E43 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C642228D6A2F000E62E43 /* UIViewControllerExtension.swift */; };
+		F43C642528D6CC6100E62E43 /* NCLoadingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C642428D6CC6100E62E43 /* NCLoadingVC.swift */; };
+		F43C642728D70B1700E62E43 /* PersistentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C642628D70B1700E62E43 /* PersistentManager.swift */; };
+		F43C642928D73D3E00E62E43 /* ChatListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C642828D73D3E00E62E43 /* ChatListVC.swift */; };
+		F43C642B28D7F9B000E62E43 /* LoginNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C642A28D7F9B000E62E43 /* LoginNetworkManager.swift */; };
+		F43C642D28D7FA3B00E62E43 /* NCNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C642C28D7FA3B00E62E43 /* NCNetwork.swift */; };
 		F4408D1828CEC009009DAD2F /* NCLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4408D1728CEC009009DAD2F /* NCLoginButton.swift */; };
 		F4408D1B28CEC8F6009DAD2F /* NCSignupLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4408D1A28CEC8F6009DAD2F /* NCSignupLabel.swift */; };
 		F44555D328CC01CF00C56D82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555D228CC01CF00C56D82 /* AppDelegate.swift */; };
@@ -35,6 +40,11 @@
 		F43C641E28D69E6100E62E43 /* NCAlertContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAlertContainerView.swift; sourceTree = "<group>"; };
 		F43C642028D69E8B00E62E43 /* NCTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTitleLabel.swift; sourceTree = "<group>"; };
 		F43C642228D6A2F000E62E43 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		F43C642428D6CC6100E62E43 /* NCLoadingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLoadingVC.swift; sourceTree = "<group>"; };
+		F43C642628D70B1700E62E43 /* PersistentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentManager.swift; sourceTree = "<group>"; };
+		F43C642828D73D3E00E62E43 /* ChatListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListVC.swift; sourceTree = "<group>"; };
+		F43C642A28D7F9B000E62E43 /* LoginNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkManager.swift; sourceTree = "<group>"; };
+		F43C642C28D7FA3B00E62E43 /* NCNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCNetwork.swift; sourceTree = "<group>"; };
 		F4408D1728CEC009009DAD2F /* NCLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLoginButton.swift; sourceTree = "<group>"; };
 		F4408D1A28CEC8F6009DAD2F /* NCSignupLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSignupLabel.swift; sourceTree = "<group>"; };
 		F44555CF28CC01CF00C56D82 /* Naren Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Naren Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +81,8 @@
 			isa = PBXGroup;
 			children = (
 				F4292D7B28D139A30025F98F /* NetworkManager.swift */,
+				F43C642628D70B1700E62E43 /* PersistentManager.swift */,
+				F43C642A28D7F9B000E62E43 /* LoginNetworkManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -79,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				F4292D7E28D13ACA0025F98F /* NCError.swift */,
+				F43C642C28D7FA3B00E62E43 /* NCNetwork.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -96,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				F43C641C28D695F200E62E43 /* NCAlertVC.swift */,
+				F43C642428D6CC6100E62E43 /* NCLoadingVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -152,6 +166,7 @@
 			isa = PBXGroup;
 			children = (
 				F44555E828CCCF2100C56D82 /* LoginViewController.swift */,
+				F43C642828D73D3E00E62E43 /* ChatListVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -270,10 +285,14 @@
 				F43C641F28D69E6100E62E43 /* NCAlertContainerView.swift in Sources */,
 				F43C642328D6A2F000E62E43 /* UIViewControllerExtension.swift in Sources */,
 				F4292D7928D114B70025F98F /* NCAPI.swift in Sources */,
+				F43C642728D70B1700E62E43 /* PersistentManager.swift in Sources */,
+				F43C642D28D7FA3B00E62E43 /* NCNetwork.swift in Sources */,
+				F43C642528D6CC6100E62E43 /* NCLoadingVC.swift in Sources */,
 				F4408D1828CEC009009DAD2F /* NCLoginButton.swift in Sources */,
 				F4292D8228D17C3C0025F98F /* UIviewExtension.swift in Sources */,
 				F44555E928CCCF2100C56D82 /* LoginViewController.swift in Sources */,
 				F44555D328CC01CF00C56D82 /* AppDelegate.swift in Sources */,
+				F43C642928D73D3E00E62E43 /* ChatListVC.swift in Sources */,
 				F4292D7C28D139A30025F98F /* NetworkManager.swift in Sources */,
 				F44555ED28CCD7C700C56D82 /* NCTextField.swift in Sources */,
 				F44555D528CC01CF00C56D82 /* SceneDelegate.swift in Sources */,
@@ -281,6 +300,7 @@
 				F4408D1B28CEC8F6009DAD2F /* NCSignupLabel.swift in Sources */,
 				F43C642128D69E8B00E62E43 /* NCTitleLabel.swift in Sources */,
 				F4292D7F28D13ACA0025F98F /* NCError.swift in Sources */,
+				F43C642B28D7F9B000E62E43 /* LoginNetworkManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

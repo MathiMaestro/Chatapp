@@ -36,12 +36,12 @@ class LoginView: UIView {
     
     private var emailTextFieldContainerHeight : NSLayoutConstraint? = nil
     
-    private let usernameTextField       = NCTextField(placeHolderName: "Enter a username")
-    private let passwordTextField       = NCTextField(placeHolderName: "Enter a passowrd")
-    private let actionButton            = NCButton(buttonColor: .systemGray)
-    private let descriptionLabel        = NCBodyLabel(textColor: .secondaryLabel, textAlignment: .center)
-    private let actionLabel             = NCBodyLabel(textColor: .systemBlue, textAlignment: .center)
-    private let emailTextField          = NCTextField(placeHolderName: "Enter a email id")
+    private let usernameTextField   = NCTextField(placeHolderName: "Enter a username")
+    private let passwordTextField   = NCTextField(placeHolderName: "Enter a passowrd")
+    private let actionButton        = NCButton(buttonColor: .systemGray)
+    private let descriptionLabel    = NCBodyLabel(textColor: .secondaryLabel, textAlignment: .center)
+    private let actionLabel         = NCBodyLabel(textColor: .systemBlue, textAlignment: .center)
+    private let emailTextField      = NCTextField(placeHolderName: "Enter a email id")
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -55,24 +55,12 @@ class LoginView: UIView {
         configureActions()
     }
     
-    private func configureProperties() {
-        if isSignUp {
-            passwordTextField.configureProperty(forPassowrd: false)
-            actionButton.set(title: "Signup")
-            descriptionLabel.setTitle(with: "Already have an account?")
-            actionLabel.setTitle(with: "login")
-            emailTextFieldContainerHeight?.constant = 70
-            emailTextFieldContainer.isHidden        = false
-        }
-        else {
-            passwordTextField.configureProperty(forPassowrd: true)
-            actionButton.set(title: "Login")
-            descriptionLabel.setTitle(with: "Don't you have an account yet?")
-            actionLabel.setTitle(with: "sign up")
-            emailTextFieldContainerHeight?.constant = 0
-            emailTextFieldContainer.isHidden        = true
-        }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
+}
+
+extension LoginView {
     
     private func configureActions() {
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
@@ -128,6 +116,27 @@ class LoginView: UIView {
         ])
     }
     
+    private func configureProperties() {
+        if isSignUp {
+            actionButton.set(title: "Signup")
+            descriptionLabel.setTitle(with: "Already have an account?")
+            actionLabel.setTitle(with: "login")
+            emailTextFieldContainerHeight?.constant = 70
+            emailTextFieldContainer.isHidden        = false
+        }
+        else {
+            passwordTextField.configurePropertyForPassword()
+            actionButton.set(title: "Login")
+            descriptionLabel.setTitle(with: "Don't you have an account yet?")
+            actionLabel.setTitle(with: "sign up")
+            emailTextFieldContainerHeight?.constant = 0
+            emailTextFieldContainer.isHidden        = true
+        }
+    }
+}
+
+extension LoginView {
+    
     func getUsernameText() -> String? {
         return usernameTextField.text
     }
@@ -147,9 +156,4 @@ class LoginView: UIView {
     @objc func actionLabelTapped() {
         delegate?.actionLabelTapped()
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }
