@@ -17,5 +17,6 @@ enum NCError : String, Error {
     case existedEmail       = "This email id already registered. Kindly go to login page"
     case registerFail       = "Sorry!. Something went wrong. Unable to register your account."
     case registerSuccess    = "Account created successfully! Please go to login page"
+    case invalidToken       = "Session expired. Logging out"
     case unknown            = "Something went wrong! Please try again."
 }

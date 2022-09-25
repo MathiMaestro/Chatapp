@@ -20,13 +20,16 @@
 		F43C642928D73D3E00E62E43 /* ChatListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C642828D73D3E00E62E43 /* ChatListVC.swift */; };
 		F43C642B28D7F9B000E62E43 /* LoginNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C642A28D7F9B000E62E43 /* LoginNetworkManager.swift */; };
 		F43C642D28D7FA3B00E62E43 /* NCNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C642C28D7FA3B00E62E43 /* NCNetwork.swift */; };
+		F43C643D28DAB10000E62E43 /* LauncherVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C643C28DAB10000E62E43 /* LauncherVC.swift */; };
+		F43C643F28DAB17E00E62E43 /* UserDetailUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C643E28DAB17E00E62E43 /* UserDetailUtil.swift */; };
+		F43C644128DDAE1500E62E43 /* UserModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43C644028DDAE1500E62E43 /* UserModal.swift */; };
 		F4408D1828CEC009009DAD2F /* NCLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4408D1728CEC009009DAD2F /* NCLoginButton.swift */; };
 		F4408D1B28CEC8F6009DAD2F /* NCSignupLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4408D1A28CEC8F6009DAD2F /* NCSignupLabel.swift */; };
 		F44555D328CC01CF00C56D82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555D228CC01CF00C56D82 /* AppDelegate.swift */; };
 		F44555D528CC01CF00C56D82 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555D428CC01CF00C56D82 /* SceneDelegate.swift */; };
 		F44555DC28CC01D000C56D82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F44555DB28CC01D000C56D82 /* Assets.xcassets */; };
 		F44555DF28CC01D000C56D82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F44555DD28CC01D000C56D82 /* LaunchScreen.storyboard */; };
-		F44555E928CCCF2100C56D82 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555E828CCCF2100C56D82 /* LoginViewController.swift */; };
+		F44555E928CCCF2100C56D82 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555E828CCCF2100C56D82 /* LoginVC.swift */; };
 		F44555ED28CCD7C700C56D82 /* NCTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555EC28CCD7C700C56D82 /* NCTextField.swift */; };
 		F4F097E828D5330D00F4BABD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F097E728D5330D00F4BABD /* LoginView.swift */; };
 /* End PBXBuildFile section */
@@ -45,6 +48,9 @@
 		F43C642828D73D3E00E62E43 /* ChatListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListVC.swift; sourceTree = "<group>"; };
 		F43C642A28D7F9B000E62E43 /* LoginNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkManager.swift; sourceTree = "<group>"; };
 		F43C642C28D7FA3B00E62E43 /* NCNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCNetwork.swift; sourceTree = "<group>"; };
+		F43C643C28DAB10000E62E43 /* LauncherVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauncherVC.swift; sourceTree = "<group>"; };
+		F43C643E28DAB17E00E62E43 /* UserDetailUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailUtil.swift; sourceTree = "<group>"; };
+		F43C644028DDAE1500E62E43 /* UserModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModal.swift; sourceTree = "<group>"; };
 		F4408D1728CEC009009DAD2F /* NCLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLoginButton.swift; sourceTree = "<group>"; };
 		F4408D1A28CEC8F6009DAD2F /* NCSignupLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSignupLabel.swift; sourceTree = "<group>"; };
 		F44555CF28CC01CF00C56D82 /* Naren Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Naren Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -53,7 +59,7 @@
 		F44555DB28CC01D000C56D82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F44555DE28CC01D000C56D82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F44555E028CC01D000C56D82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F44555E828CCCF2100C56D82 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		F44555E828CCCF2100C56D82 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		F44555EC28CCD7C700C56D82 /* NCTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTextField.swift; sourceTree = "<group>"; };
 		F4F097E728D5330D00F4BABD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				F4292D7828D114B70025F98F /* NCAPI.swift */,
+				F43C644028DDAE1500E62E43 /* UserModal.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -92,6 +99,7 @@
 			children = (
 				F4292D7E28D13ACA0025F98F /* NCError.swift */,
 				F43C642C28D7FA3B00E62E43 /* NCNetwork.swift */,
+				F43C643E28DAB17E00E62E43 /* UserDetailUtil.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -165,8 +173,9 @@
 		F44555E628CCCEC400C56D82 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				F44555E828CCCF2100C56D82 /* LoginViewController.swift */,
+				F44555E828CCCF2100C56D82 /* LoginVC.swift */,
 				F43C642828D73D3E00E62E43 /* ChatListVC.swift */,
+				F43C643C28DAB10000E62E43 /* LauncherVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -290,13 +299,16 @@
 				F43C642528D6CC6100E62E43 /* NCLoadingVC.swift in Sources */,
 				F4408D1828CEC009009DAD2F /* NCLoginButton.swift in Sources */,
 				F4292D8228D17C3C0025F98F /* UIviewExtension.swift in Sources */,
-				F44555E928CCCF2100C56D82 /* LoginViewController.swift in Sources */,
+				F43C644128DDAE1500E62E43 /* UserModal.swift in Sources */,
+				F43C643D28DAB10000E62E43 /* LauncherVC.swift in Sources */,
+				F44555E928CCCF2100C56D82 /* LoginVC.swift in Sources */,
 				F44555D328CC01CF00C56D82 /* AppDelegate.swift in Sources */,
 				F43C642928D73D3E00E62E43 /* ChatListVC.swift in Sources */,
 				F4292D7C28D139A30025F98F /* NetworkManager.swift in Sources */,
 				F44555ED28CCD7C700C56D82 /* NCTextField.swift in Sources */,
 				F44555D528CC01CF00C56D82 /* SceneDelegate.swift in Sources */,
 				F4F097E828D5330D00F4BABD /* LoginView.swift in Sources */,
+				F43C643F28DAB17E00E62E43 /* UserDetailUtil.swift in Sources */,
 				F4408D1B28CEC8F6009DAD2F /* NCSignupLabel.swift in Sources */,
 				F43C642128D69E8B00E62E43 /* NCTitleLabel.swift in Sources */,
 				F4292D7F28D13ACA0025F98F /* NCError.swift in Sources */,

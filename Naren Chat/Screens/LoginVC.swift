@@ -1,5 +1,5 @@
 //
-//  LoginViewController.swift
+//  LoginVC.swift
 //  Naren Chat
 //
 //  Created by Mathiyalagan S on 10/09/22.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoginViewController: NCLoadingVC {
+class LoginVC: NCLoadingVC {
 
     private let loginView   = LoginView(isSignUp: false)
     private let signupView  = LoginView(isSignUp: true)
@@ -32,7 +32,7 @@ class LoginViewController: NCLoadingVC {
     }
 }
 
-extension LoginViewController {
+extension LoginVC {
     
     private func login() {
         let username = loginView.getUsernameText() ?? ""
@@ -72,7 +72,7 @@ extension LoginViewController {
     }
 }
 
-extension LoginViewController : LoginViewToVC {
+extension LoginVC : LoginViewToVC {
     
     func actionButtonTapped() {
         showLoadingView()

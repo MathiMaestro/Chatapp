@@ -18,10 +18,13 @@ enum PersistenceManager {
             if let newValue {
                 updateToken(with: newValue)
             }
+            else {
+                removeToken()
+            }
         }
     }
     
-    static func updateToken(with token: String?) {
+    private static func updateToken(with token: String?) {
         do {
             let encoder = JSONEncoder()
             let encodedToken = try encoder.encode(token)
@@ -31,7 +34,7 @@ enum PersistenceManager {
         }
     }
     
-    static func getToken() -> String? {
+    private static func getToken() -> String? {
         guard let decodedToken = defaults.object(forKey: "token") as? Data else {
             return nil
         }

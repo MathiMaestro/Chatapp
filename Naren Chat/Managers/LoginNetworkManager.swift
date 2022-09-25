@@ -10,6 +10,39 @@ import Foundation
 class LoginNetworkManager {
     
     static let shared = LoginNetworkManager()
+    var decoder : JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return decoder
+    }()
+    
+    func getUserDetails(completed: @escaping (Result<UserData?,NCError>) -> Void) {
+        guard let url = URL(string: NCAPI.getAPI(for: .isValidUser)), let token = PersistenceManager.token else {
+            completed(.failure(.invalidToken))
+            return
+        }
+        var urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: "GET")
+        urlRequest.setValue(token, forHTTPHeaderField: "Authorization")
+        NetworkManager.shared.makeRequest(with: urlRequest) { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+                    guard let jsonDict = jsonData as? [String:Any], let dataJson = jsonDict["data"] as? [String:Any], let data = NCNetworkUtils.getHttpBody(from: dataJson) else {
+                        completed(.failure(.invalidToken))
+                        return
+                    }
+                    let userData = try self.decoder.decode(UserData.self, from: data)
+                    completed(.success(userData))
+                }
+                catch {
+                    completed(.failure(.invalidToken))
+                }
+            case .failure(_):
+                completed(.failure(.invalidToken))
+            }
+        }
+    }
     
     func checkIsUserDetailAlreadyExist(userDetail: String, isEmail: Bool , completed: @escaping (Result<Bool,NCError>) -> Void) {
         guard let url = URL(string: (isEmail ? NCAPI.getAPI(for: .checkEmailId) : NCAPI.getAPI(for: .checkUsername)) + "\(userDetail)") else {
