@@ -42,7 +42,7 @@ extension LoginVC {
             switch result {
             case .success(let token):
                 PersistenceManager.token = token
-                self.presentChatListView()
+                self.presentLauncherVC()
             case .failure(let error):
                 self.presentNCAlertViewInMainThread(title: "Oops..", message: error.rawValue, buttonTitle: "Ok")
             }
@@ -64,10 +64,9 @@ extension LoginVC {
         }
     }
     
-    private func presentChatListView() {
+    private func presentLauncherVC() {
         DispatchQueue.main.async {
-            let chatListVC = ChatListVC()
-            self.navigationController?.pushViewController(chatListVC, animated: true)
+            self.navigationController?.pushViewController(LauncherVC(), animated: true)
         }
     }
 }

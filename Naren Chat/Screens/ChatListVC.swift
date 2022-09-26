@@ -9,9 +9,31 @@ import UIKit
 
 class ChatListVC: UIViewController {
 
+    var socketManager : IOSocketManager?
+    
+    let tableView : UITableView = {
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .green
+        return tableView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGreen
-        // Do any additional setup after loading the view.
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        configureUI()
+    }
+    
+    private func configureUI() {
+        view.backgroundColor = .systemBackground
+        view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
 }
+
