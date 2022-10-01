@@ -109,7 +109,7 @@ class LauncherVC: NCLoadingVC {
     private func showChatListVC() {
         DispatchQueue.main.async {
             guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
-            window.rootViewController = UINavigationController(rootViewController: NCTabBarController())
+            window.rootViewController = NCTabBarController()
         }
     }
     

@@ -1,5 +1,5 @@
 //
-//  NCSignupLabel.swift
+//  NCBodyLabel.swift
 //  Naren Chat
 //
 //  Created by Mathiyalagan S on 12/09/22.
@@ -23,6 +23,12 @@ class NCBodyLabel: UILabel {
         self.init(frame: .zero)
         set(textColor: textColor, textAlignment: textAlignment)
         setTitle(with: title)
+    }
+    
+    convenience init(textColor: UIColor, textAlignment: NSTextAlignment, font: UIFont) {
+        self.init(frame: .zero)
+        set(textColor: textColor, textAlignment: textAlignment)
+        self.font = font
     }
     
     private func configureProperties() {

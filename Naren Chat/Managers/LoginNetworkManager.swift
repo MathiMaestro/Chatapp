@@ -10,29 +10,24 @@ import Foundation
 class LoginNetworkManager {
     
     static let shared = LoginNetworkManager()
-    var decoder : JSONDecoder = {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return decoder
-    }()
     
-    func getUserDetails(completed: @escaping (Result<UserData?,NCError>) -> Void) {
+    func getUserDetails(completed: @escaping (Result<UserData,NCError>) -> Void) {
         guard let url = URL(string: NCAPI.getAPI(for: .isValidUser)), let token = PersistenceManager.token else {
             completed(.failure(.invalidToken))
             return
         }
-        var urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: "GET")
+        var urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: .get)
         urlRequest.setValue(token, forHTTPHeaderField: "Authorization")
         NetworkManager.shared.makeRequest(with: urlRequest) { result in
             switch result {
             case .success(let data):
                 do {
                     let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-                    guard let jsonDict = jsonData as? [String:Any], let dataJson = jsonDict["data"] as? [String:Any], let data = NCNetworkUtils.getHttpBody(from: dataJson) else {
+                    guard let jsonDict = jsonData as? [String:Any], let dataJson = jsonDict["data"] as? [String:Any], let data = NCNetworkUtils.getData(from: dataJson) else {
                         completed(.failure(.invalidToken))
                         return
                     }
-                    let userData = try self.decoder.decode(UserData.self, from: data)
+                    let userData = try NCNetworkUtils.decoder.decode(UserData.self, from: data)
                     completed(.success(userData))
                 }
                 catch {
@@ -49,7 +44,7 @@ class LoginNetworkManager {
             completed(.failure(.unknown))
             return
         }
-        let urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: "GET")
+        let urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: .get)
         NetworkManager.shared.makeRequest(with: urlRequest) { result in
             switch result {
             case .success(let data):
@@ -70,7 +65,7 @@ class LoginNetworkManager {
         }
     }
     
-    func login(with userName: String, password: String, completed: @escaping (Result<String?,NCError>) -> Void) {
+    func login(with userName: String, password: String, completed: @escaping (Result<String,NCError>) -> Void) {
         
         checkIsUserDetailAlreadyExist(userDetail: userName, isEmail: false) { result in
             switch result {
@@ -89,19 +84,19 @@ class LoginNetworkManager {
         
     }
     
-    func verifyUser(with userName: String, password: String, completed: @escaping (Result<String?,NCError>) -> Void) {
+    func verifyUser(with userName: String, password: String, completed: @escaping (Result<String,NCError>) -> Void) {
         guard let url = URL(string: NCAPI.getAPI(for: .login)) else {
             completed(.failure(.unknown))
             return
         }
         
-        let urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: "POST")
+        let urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: .post)
         
         let bodyJson : [String : Any] = ["user_name":"\(userName)",
                                      "pass":"\(password)"
         ]
         
-        guard let body = NCNetworkUtils.getHttpBody(from: bodyJson) else {
+        guard let body = NCNetworkUtils.getData(from: bodyJson) else {
             completed(.failure(.unknown))
             return
         }
@@ -160,14 +155,14 @@ class LoginNetworkManager {
             return
         }
         
-        let urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: "POST")
+        let urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: .post)
         
         let bodyJson : [String : Any] = ["user_name":"\(username)",
                                      "password":"\(password)",
                                      "email_id":"\(emailId)"
         ]
         
-        guard let body = NCNetworkUtils.getHttpBody(from: bodyJson) else {
+        guard let body = NCNetworkUtils.getData(from: bodyJson) else {
             completed(.failure(.unknown))
             return
         }

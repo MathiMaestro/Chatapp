@@ -13,6 +13,7 @@ enum APIType {
     case checkUsername
     case checkEmailId
     case isValidUser
+    case chatList
 }
 
 class NCAPI {
@@ -34,6 +35,8 @@ class NCAPI {
             api += "/user/check?email_id="
         case .isValidUser:
             api += "/user"
+        case .chatList:
+            api += "/chats?limit="
         }
         
         return api

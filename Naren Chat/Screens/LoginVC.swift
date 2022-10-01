@@ -37,7 +37,8 @@ extension LoginVC {
     private func login() {
         let username = loginView.getUsernameText() ?? ""
         let password = loginView.getPasswordText() ?? ""
-        LoginNetworkManager.shared.login(with: username, password: password) { result in
+        LoginNetworkManager.shared.login(with: username, password: password) { [weak self] result in
+            guard let self else { return }
             self.dismissLoadingView()
             switch result {
             case .success(let token):
@@ -53,7 +54,8 @@ extension LoginVC {
         let username = signupView.getUsernameText() ?? ""
         let password = signupView.getPasswordText() ?? ""
         let emailId = signupView.getEmailIdText() ?? ""
-        LoginNetworkManager.shared.signupWith(username: username, emailId: emailId, password: password) { result in
+        LoginNetworkManager.shared.signupWith(username: username, emailId: emailId, password: password) { [weak self] result in
+            guard let self else { return }
             self.dismissLoadingView()
             switch result {
             case .success(_):

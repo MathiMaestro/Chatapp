@@ -25,6 +25,12 @@ class NCTitleLabel: UILabel {
         set(textColor: textColor, textAlignment: textAlignment)
     }
     
+    convenience init(textColor: UIColor,textAlignment: NSTextAlignment, font: UIFont = .preferredFont(forTextStyle: .title3)) {
+        self.init(frame: .zero)
+        set(textColor: textColor, textAlignment: textAlignment)
+        self.font = font
+    }
+    
     private func configureProperties() {
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -37,6 +43,7 @@ class NCTitleLabel: UILabel {
     private func set(textColor: UIColor,textAlignment: NSTextAlignment) {
         self.textColor      = textColor
         self.textAlignment  = textAlignment
+        self.font           = font
     }
     
     func setTitle(with title: String) {
