@@ -11,6 +11,7 @@ class NCTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.setNavigationBarHidden(false, animated: true)
         viewControllers     = [createChatListVC(),createContactsVC(),createSettingsVC()]
     }
     

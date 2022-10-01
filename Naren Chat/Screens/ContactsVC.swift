@@ -11,19 +11,17 @@ class ContactsVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        configureNavigationBar()
+        configureUI()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func configureNavigationBar() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        title = "Contacts"
     }
-    */
+    
+    private func configureUI() {
+        view.backgroundColor = .systemBackground
+    }
 
 }

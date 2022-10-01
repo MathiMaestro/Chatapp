@@ -16,10 +16,9 @@ class NCMsgCountLabel: UILabel {
         configureProperties()
     }
     
-    convenience init(textColor: UIColor, textAlignment: NSTextAlignment, font: UIFont) {
+    convenience init(textColor: UIColor, textAlignment: NSTextAlignment) {
         self.init(frame: .zero)
         set(textColor: textColor, textAlignment: textAlignment)
-        self.font = font
     }
     
     private func configureProperties() {

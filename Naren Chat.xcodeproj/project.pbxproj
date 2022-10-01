@@ -39,6 +39,7 @@
 		F475F72B28E4A49700DFB022 /* ChatListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F475F72A28E4A49700DFB022 /* ChatListTableViewCell.swift */; };
 		F4ABD2EC28E4AC40003EB5EE /* ChatListModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ABD2EB28E4AC40003EB5EE /* ChatListModal.swift */; };
 		F4C7114328E8B53D0010E33C /* NCMsgCountLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114228E8B53D0010E33C /* NCMsgCountLabel.swift */; };
+		F4C7114528E8CDE00010E33C /* NCLogoutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114428E8CDE00010E33C /* NCLogoutButton.swift */; };
 		F4C9A2B028E0EFE1007AE983 /* NCTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C9A2AF28E0EFE1007AE983 /* NCTabBarController.swift */; };
 		F4C9A2B228E0F0B0007AE983 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C9A2B128E0F0B0007AE983 /* SettingsVC.swift */; };
 		F4C9A2B428E0F0CD007AE983 /* ContactsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C9A2B328E0F0CD007AE983 /* ContactsVC.swift */; };
@@ -83,6 +84,7 @@
 		F475F72A28E4A49700DFB022 /* ChatListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListTableViewCell.swift; sourceTree = "<group>"; };
 		F4ABD2EB28E4AC40003EB5EE /* ChatListModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListModal.swift; sourceTree = "<group>"; };
 		F4C7114228E8B53D0010E33C /* NCMsgCountLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMsgCountLabel.swift; sourceTree = "<group>"; };
+		F4C7114428E8CDE00010E33C /* NCLogoutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLogoutButton.swift; sourceTree = "<group>"; };
 		F4C9A2AF28E0EFE1007AE983 /* NCTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTabBarController.swift; sourceTree = "<group>"; };
 		F4C9A2B128E0F0B0007AE983 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		F4C9A2B328E0F0CD007AE983 /* ContactsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsVC.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				F4408D1728CEC009009DAD2F /* NCLoginButton.swift */,
+				F4C7114428E8CDE00010E33C /* NCLogoutButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 				F43C641D28D695F200E62E43 /* NCAlertVC.swift in Sources */,
 				F43C641F28D69E6100E62E43 /* NCAlertContainerView.swift in Sources */,
 				F43C642328D6A2F000E62E43 /* UIViewControllerExtension.swift in Sources */,
+				F4C7114528E8CDE00010E33C /* NCLogoutButton.swift in Sources */,
 				F4292D7928D114B70025F98F /* NCAPI.swift in Sources */,
 				F43C642728D70B1700E62E43 /* PersistentManager.swift in Sources */,
 				F4C9A2B628E1DA5F007AE983 /* WebSocketManager.swift in Sources */,

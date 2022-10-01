@@ -39,12 +39,12 @@ extension LoginVC {
         let password = loginView.getPasswordText() ?? ""
         LoginNetworkManager.shared.login(with: username, password: password) { [weak self] result in
             guard let self else { return }
-            self.dismissLoadingView()
             switch result {
             case .success(let token):
                 PersistenceManager.token = token
                 self.presentLauncherVC()
             case .failure(let error):
+                self.dismissLoadingView()
                 self.presentNCAlertViewInMainThread(title: "Oops..", message: error.rawValue, buttonTitle: "Ok")
             }
         }
@@ -68,6 +68,7 @@ extension LoginVC {
     
     private func presentLauncherVC() {
         DispatchQueue.main.async {
+            self.dismissLoadingView()
             self.navigationController?.pushViewController(LauncherVC(), animated: true)
         }
     }
