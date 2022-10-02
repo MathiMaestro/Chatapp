@@ -34,4 +34,12 @@ enum NCNetworkUtils {
             return nil
         }
     }
+    
+    static func getData(from bodyJson: [[String : Any]]) -> Data? {
+        do {
+            return try JSONSerialization.data(withJSONObject: bodyJson)
+        } catch {
+            return nil
+        }
+    }
 }

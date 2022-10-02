@@ -7,13 +7,14 @@
 
 import Foundation
 
-struct UserData : Codable {
-    var id              : String
+struct UserData : Codable, Hashable {
+    var id              : String?
+    var _id             : String?
     var userName        : String
-    var emailId         : String
+    var emailId         : String?
     var imgUrl          : String
-    var totalChats      : Int
-    var unreadChats     : Int
-    var joinedTime      : Int64
+    var totalChats      : Int?
+    var unreadChats     : Int?
+    var joinedTime      : Int64?
     var lastOnline      : Int64
 }

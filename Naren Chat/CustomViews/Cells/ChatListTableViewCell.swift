@@ -19,6 +19,13 @@ class ChatListTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        
+        userNameLabel.text          = nil
+        lastMessageLabel.text       = nil
+        timeLabel.text              = nil
+        unReadChatCountLabel.text   = nil
+        
+        profileImageView.resetImage()
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -46,11 +53,11 @@ class ChatListTableViewCell: UITableViewCell {
             
             userNameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
             userNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
-            userNameLabel.trailingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: -padding),
+            userNameLabel.trailingAnchor.constraint(equalTo: timeLabel.leadingAnchor, constant: -padding),
             
             lastMessageLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
             lastMessageLabel.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 6),
-            lastMessageLabel.trailingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: -padding),
+            lastMessageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -70),
         ])
         
         profileImageView.layer.cornerRadius     = 22

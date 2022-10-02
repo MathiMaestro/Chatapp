@@ -23,6 +23,10 @@ class NCProfileImageView: UIImageView {
         tintColor   = .systemGray2
     }
     
+    func resetImage() {
+        image = UIImage(systemName: "person.circle.fill")
+    }
+    
     func downloadImage(for urlString: String) {
         let cacheKey = NSString(string: urlString)
         if let profileImage = cache.object(forKey: cacheKey) {
@@ -32,7 +36,8 @@ class NCProfileImageView: UIImageView {
         guard let url   = URL(string: urlString) else { return }
         let urlRequest  = NCNetworkUtils.createUrlRequest(for: url, httpMethod: .get)
         
-        NetworkManager.shared.makeRequest(with: urlRequest) { result in
+        NetworkManager.shared.makeRequest(with: urlRequest) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let data):
                 if let profileImage = UIImage(data: data) {

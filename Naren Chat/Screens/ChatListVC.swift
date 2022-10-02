@@ -11,8 +11,6 @@ class ChatListVC: NCLoadingVC {
 
     enum DiffableDSSectionType { case main }
     
-    private var socketManager : IOSocketManager?
-    
     private var listCount : Int         = 100
     private var isDataAvailable : Bool  = true
     
@@ -22,17 +20,18 @@ class ChatListVC: NCLoadingVC {
         
         tableView.backgroundColor = .systemBackground
         tableView.register(ChatListTableViewCell.self, forCellReuseIdentifier: ChatListTableViewCell.reusableId)
-        
+        tableView.rowHeight = 66
         return tableView
     }()
     
     private var dataSource : UITableViewDiffableDataSource<DiffableDSSectionType,Chat>?
     
-    private var chatList : [Chat] = []
+    private var chatList : [Chat]   = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
+        configureSearchController()
         configureUI()
         configureDataSource()
         getChatList()
@@ -45,18 +44,18 @@ class ChatListVC: NCLoadingVC {
         title = "Chats"
     }
     
+    private func configureSearchController() {
+        let searchController                                    = UISearchController()
+        searchController.searchBar.placeholder                  = "Search for a username"
+        searchController.searchResultsUpdater                   = self
+        searchController.obscuresBackgroundDuringPresentation   = false
+        navigationItem.searchController                         = searchController
+    }
+    
     private func configureUI() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor    = .systemBackground
+        tableView.frame         = view.bounds
         view.addSubview(tableView)
-        
-        NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-        
-        tableView.delegate = self
     }
     
     private func getChatList() {
@@ -68,16 +67,19 @@ class ChatListVC: NCLoadingVC {
             case .success(let chatListData):
                 self.chatList           = chatListData.chats
                 self.isDataAvailable    = chatListData.hasMore
-                self.updateView()
+                self.updateView(chatList: self.chatList)
             case .failure(let error):
                 self.presentNCAlertViewInMainThread(title: "Oops..", message: error.rawValue, buttonTitle: "Ok")
+                if error == .invalidToken {
+                    SessionUtil.goToLogin()
+                }
             }
         }
     }
     
     private func configureDataSource() {
-        dataSource = .init(tableView: self.tableView, cellProvider: { (tableView, indexPath, itemIdentifier) -> UITableViewCell in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatListTableViewCell.reusableId, for: indexPath) as? ChatListTableViewCell else {
+        dataSource = .init(tableView: self.tableView, cellProvider: { [weak self] (tableView, indexPath, itemIdentifier) -> UITableViewCell in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatListTableViewCell.reusableId, for: indexPath) as? ChatListTableViewCell, let self else {
                 return tableView.dequeueReusableCell(withIdentifier: ChatListTableViewCell.reusableId, for: indexPath)
             }
             let chat = self.chatList[indexPath.item]
@@ -86,7 +88,7 @@ class ChatListVC: NCLoadingVC {
         })
     }
     
-    private func updateView() {
+    private func updateView(chatList : [Chat]) {
         var snapshot = NSDiffableDataSourceSnapshot<DiffableDSSectionType,Chat>()
         snapshot.appendSections([.main])
         snapshot.appendItems(chatList)
@@ -94,8 +96,14 @@ class ChatListVC: NCLoadingVC {
     }
 }
 
-extension ChatListVC : UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 66
+extension ChatListVC : UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
+            updateView(chatList: chatList)
+            return
+        }
+        let searchList = chatList.filter({($0.getSender()?.userName ?? "").lowercased().contains(searchText.lowercased())})
+        updateView(chatList: searchList)
     }
 }

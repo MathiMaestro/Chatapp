@@ -149,6 +149,12 @@ extension LoginView {
         return emailTextField.text
     }
     
+    func resetValues() {
+        usernameTextField.text  = ""
+        passwordTextField.text  = ""
+        emailTextField.text     = ""
+    }
+    
     @objc func actionButtonTapped() {
         delegate?.actionButtonTapped()
     }

@@ -25,13 +25,13 @@ class ChatListNetworkManager {
                 do {
                     let jsonData = try JSONSerialization.jsonObject(with: data)
                     guard let jsonDict = jsonData as? [String: Any], let dictData = jsonDict["data"] as? [String: Any], let chatListData = NCNetworkUtils.getData(from: dictData) else {
-                        completed(.failure(.inavlidResponse))
+                        completed(.failure(.invalidResponse))
                         return
                     }
                     let chatList = try NCNetworkUtils.decoder.decode(ChatListData.self, from: chatListData)
                     completed(.success(chatList))
                 } catch {
-                    completed(.failure(.inavlidResponse))
+                    completed(.failure(.invalidResponse))
                 }
             case .failure(let error):
                 completed(.failure(error))

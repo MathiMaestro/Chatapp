@@ -18,7 +18,7 @@ class NetworkManager {
             urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
             urlRequest.httpBody = body
         }
-        
+        urlRequest.timeoutInterval = 30
         let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
                 let nsError = error as NSError
@@ -32,7 +32,7 @@ class NetworkManager {
             }
             
             guard let response = response as? HTTPURLResponse else {
-                completed(.failure(.inavlidResponse))
+                completed(.failure(.invalidResponse))
                 return
             }
             
@@ -46,8 +46,10 @@ class NetworkManager {
                 completed(.success(data))
             case 500:
                 completed(.failure(.invalidPassowrd))
+            case 400:
+                completed(.failure(.invalidToken))
             default:
-                break
+                completed(.failure(.unknown))
             }
 
         }

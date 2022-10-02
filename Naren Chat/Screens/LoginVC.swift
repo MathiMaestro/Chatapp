@@ -17,6 +17,7 @@ class LoginVC: NCLoadingVC {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         configureUI()
+        createDismissKeyboardTapGesture()
     }
     
     private func configureUI() {
@@ -29,6 +30,11 @@ class LoginVC: NCLoadingVC {
         signupView.delegate = self
         
         signupView.isHidden = true
+    }
+    
+    private func createDismissKeyboardTapGesture() {
+        let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tap)
     }
 }
 
@@ -85,6 +91,8 @@ extension LoginVC : LoginViewToVC {
         isLoginEnabled      = !isLoginEnabled
         signupView.isHidden = !signupView.isHidden
         loginView.isHidden  = !loginView.isHidden
+        loginView.resetValues()
+        signupView.resetValues()
     }
 }
 

@@ -9,7 +9,7 @@ import Foundation
 
 class UserDetailUtil {
     
-    static var shared = UserDetailUtil()
+    static let shared = UserDetailUtil()
     
     var userData : UserData? = nil
     
@@ -24,7 +24,8 @@ class UserDetailUtil {
     }
     
     func getUserDetails(completed: @escaping (NCError?) -> Void) {
-        LoginNetworkManager.shared.getUserDetails { result in
+        LoginNetworkManager.shared.getUserDetails { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let userData):
                 self.userData = userData

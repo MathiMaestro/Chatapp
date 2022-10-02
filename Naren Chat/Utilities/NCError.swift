@@ -9,7 +9,7 @@ import Foundation
 
 enum NCError : String, Error {
     case networkConnection  = "Kindly check your internet connection."
-    case inavlidResponse    = "Invalid response from the server. Please try again."
+    case invalidResponse    = "Invalid response from the server. Please try again."
     case invalidData        = "The data received from the server is invalid. Please try again."
     case invalidPassowrd    = "The password you entered is incorrect. Kindly enter a correct passowrd"
     case invalidUser        = "The username you entered is incorrect. Kindly enter a valid username"

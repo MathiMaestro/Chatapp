@@ -51,13 +51,13 @@ class LoginNetworkManager {
                 do {
                     let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
                     guard let jsonDict = jsonData as? [String:Any], let data = jsonDict["data"] as? [String:Any], let isUserFound = data["user_found"] as? Bool else {
-                        completed(.failure(.inavlidResponse))
+                        completed(.failure(.invalidResponse))
                         return
                     }
                     completed(.success(isUserFound))
                 }
                 catch {
-                    completed(.failure(.inavlidResponse))
+                    completed(.failure(.invalidResponse))
                 }
             case .failure(let error):
                 completed(.failure(error))
@@ -107,13 +107,13 @@ class LoginNetworkManager {
                 do {
                     let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
                     guard let jsonDict = jsonData as? [String:Any], let data = jsonDict["data"] as? [String:Any], let token = data["token"] as? String else {
-                        completed(.failure(.inavlidResponse))
+                        completed(.failure(.invalidResponse))
                         return
                     }
                     completed(.success(token))
                 }
                 catch {
-                    completed(.failure(.inavlidResponse))
+                    completed(.failure(.invalidResponse))
                 }
             case .failure(let error):
                 completed(.failure(error))
@@ -122,7 +122,8 @@ class LoginNetworkManager {
     }
     
     func signupWith(username: String, emailId: String, password: String, completed: @escaping (Result<Bool,NCError>) -> Void) {
-        checkIsUserDetailAlreadyExist(userDetail: username, isEmail: false) { result in
+        checkIsUserDetailAlreadyExist(userDetail: username, isEmail: false) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let isUserExist):
                 if isUserExist {
@@ -173,7 +174,7 @@ class LoginNetworkManager {
                 do {
                     let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
                     guard let jsonDict = jsonData as? [String:Any], let data = jsonDict["data"] as? [String:Any], let isRegistered = data["created"] as? Bool else {
-                        completed(.failure(.inavlidResponse))
+                        completed(.failure(.invalidResponse))
                         return
                     }
                     if isRegistered {
@@ -183,7 +184,7 @@ class LoginNetworkManager {
                     }
                 }
                 catch {
-                    completed(.failure(.inavlidResponse))
+                    completed(.failure(.invalidResponse))
                 }
             case .failure(let error):
                 completed(.failure(error))
