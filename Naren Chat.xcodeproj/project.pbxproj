@@ -35,7 +35,7 @@
 		F44555DF28CC01D000C56D82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F44555DD28CC01D000C56D82 /* LaunchScreen.storyboard */; };
 		F44555E928CCCF2100C56D82 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555E828CCCF2100C56D82 /* LoginVC.swift */; };
 		F44555ED28CCD7C700C56D82 /* NCTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555EC28CCD7C700C56D82 /* NCTextField.swift */; };
-		F4522AB328E4CE36000ECD2F /* ChatListNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4522AB228E4CE36000ECD2F /* ChatListNetworkManager.swift */; };
+		F4522AB328E4CE36000ECD2F /* ChatUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4522AB228E4CE36000ECD2F /* ChatUtils.swift */; };
 		F475F72B28E4A49700DFB022 /* ChatListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F475F72A28E4A49700DFB022 /* ChatListTableViewCell.swift */; };
 		F4ABD2EC28E4AC40003EB5EE /* ChatListModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ABD2EB28E4AC40003EB5EE /* ChatListModal.swift */; };
 		F4C7114328E8B53D0010E33C /* NCMsgCountLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114228E8B53D0010E33C /* NCMsgCountLabel.swift */; };
@@ -45,6 +45,7 @@
 		F4C7114B28E8E91B0010E33C /* SessionUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114A28E8E91B0010E33C /* SessionUtil.swift */; };
 		F4C7114D28E90BD30010E33C /* SettingsOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114C28E90BD30010E33C /* SettingsOptionTableViewCell.swift */; };
 		F4C7114F28E919060010E33C /* ContactListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114E28E919060010E33C /* ContactListTableViewCell.swift */; };
+		F4C7115128EA09F40010E33C /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7115028EA09F40010E33C /* ChatVC.swift */; };
 		F4C9A2B028E0EFE1007AE983 /* NCTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C9A2AF28E0EFE1007AE983 /* NCTabBarController.swift */; };
 		F4C9A2B228E0F0B0007AE983 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C9A2B128E0F0B0007AE983 /* SettingsVC.swift */; };
 		F4C9A2B428E0F0CD007AE983 /* ContactsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C9A2B328E0F0CD007AE983 /* ContactsVC.swift */; };
@@ -85,7 +86,7 @@
 		F44555E028CC01D000C56D82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F44555E828CCCF2100C56D82 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		F44555EC28CCD7C700C56D82 /* NCTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTextField.swift; sourceTree = "<group>"; };
-		F4522AB228E4CE36000ECD2F /* ChatListNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListNetworkManager.swift; sourceTree = "<group>"; };
+		F4522AB228E4CE36000ECD2F /* ChatUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUtils.swift; sourceTree = "<group>"; };
 		F475F72A28E4A49700DFB022 /* ChatListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListTableViewCell.swift; sourceTree = "<group>"; };
 		F4ABD2EB28E4AC40003EB5EE /* ChatListModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListModal.swift; sourceTree = "<group>"; };
 		F4C7114228E8B53D0010E33C /* NCMsgCountLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMsgCountLabel.swift; sourceTree = "<group>"; };
@@ -95,6 +96,7 @@
 		F4C7114A28E8E91B0010E33C /* SessionUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionUtil.swift; sourceTree = "<group>"; };
 		F4C7114C28E90BD30010E33C /* SettingsOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptionTableViewCell.swift; sourceTree = "<group>"; };
 		F4C7114E28E919060010E33C /* ContactListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListTableViewCell.swift; sourceTree = "<group>"; };
+		F4C7115028EA09F40010E33C /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		F4C9A2AF28E0EFE1007AE983 /* NCTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTabBarController.swift; sourceTree = "<group>"; };
 		F4C9A2B128E0F0B0007AE983 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		F4C9A2B328E0F0CD007AE983 /* ContactsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsVC.swift; sourceTree = "<group>"; };
@@ -148,7 +150,6 @@
 				F43C642628D70B1700E62E43 /* PersistentManager.swift */,
 				F43C642A28D7F9B000E62E43 /* LoginNetworkManager.swift */,
 				F4C9A2B528E1DA5F007AE983 /* WebSocketManager.swift */,
-				F4522AB228E4CE36000ECD2F /* ChatListNetworkManager.swift */,
 				F4C7114828E8E1330010E33C /* ContactsNetworkManager.swift */,
 			);
 			path = Managers;
@@ -161,6 +162,7 @@
 				F43C642C28D7FA3B00E62E43 /* NCNetwork.swift */,
 				F43C643E28DAB17E00E62E43 /* UserDetailUtil.swift */,
 				F4C7114A28E8E91B0010E33C /* SessionUtil.swift */,
+				F4522AB228E4CE36000ECD2F /* ChatUtils.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -253,6 +255,7 @@
 				F43C643C28DAB10000E62E43 /* LauncherVC.swift */,
 				F4C9A2B128E0F0B0007AE983 /* SettingsVC.swift */,
 				F4C9A2B328E0F0CD007AE983 /* ContactsVC.swift */,
+				F4C7115028EA09F40010E33C /* ChatVC.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -443,11 +446,12 @@
 				F43C642928D73D3E00E62E43 /* ChatListVC.swift in Sources */,
 				F4292D7C28D139A30025F98F /* NetworkManager.swift in Sources */,
 				F44555ED28CCD7C700C56D82 /* NCTextField.swift in Sources */,
-				F4522AB328E4CE36000ECD2F /* ChatListNetworkManager.swift in Sources */,
+				F4522AB328E4CE36000ECD2F /* ChatUtils.swift in Sources */,
 				F44555D528CC01CF00C56D82 /* SceneDelegate.swift in Sources */,
 				F4ABD2EC28E4AC40003EB5EE /* ChatListModal.swift in Sources */,
 				F4C9A2B428E0F0CD007AE983 /* ContactsVC.swift in Sources */,
 				F4F097E828D5330D00F4BABD /* LoginView.swift in Sources */,
+				F4C7115128EA09F40010E33C /* ChatVC.swift in Sources */,
 				F43C643F28DAB17E00E62E43 /* UserDetailUtil.swift in Sources */,
 				F42F256128E786C900E9130E /* NCProfileImageView.swift in Sources */,
 				F4408D1B28CEC8F6009DAD2F /* NCBodyLabel.swift in Sources */,

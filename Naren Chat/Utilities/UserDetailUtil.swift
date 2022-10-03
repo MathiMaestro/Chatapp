@@ -9,13 +9,12 @@ import Foundation
 
 class UserDetailUtil {
     
-    static let shared = UserDetailUtil()
-    
-    var userData : UserData? = nil
+    static let shared           = UserDetailUtil()
+    var userData : UserData?    = nil
     
     func removeUserData() {
-        PersistenceManager.token = nil
-        userData = nil
+        PersistenceManager.token    = nil
+        userData                    = nil
     }
     
     func isUserLoggedinAlready() -> Bool {
@@ -37,3 +36,4 @@ class UserDetailUtil {
     }
     
 }
+

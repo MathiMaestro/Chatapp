@@ -101,6 +101,7 @@ class LauncherVC: NCLoadingVC {
                 UserDetailUtil.shared.removeUserData()
                 self.goToLoginPage()
             } else {
+                IOSocketManager.shared.connectSocket()
                 self.showChatListVC()
             }
         }

@@ -22,8 +22,11 @@ struct Chat : Codable, Hashable {
     let lastActiveTime  : Double
     
     func getSender() -> Participant? {
-        let participant = participants.filter({$0._id == lastMessage.senderId}).first
-        return participant
+        if let participant = participants.filter({$0._id == lastMessage.senderId}).first {
+            return participant
+        } else {
+            return participants.filter({$0._id != UserDetailUtil.shared.userData?.id}).first
+        }
     }
 }
 
@@ -34,11 +37,11 @@ struct Participant : Codable, Hashable {
 }
 
 struct Message : Codable, Hashable {
-    let _id          : String
-    let senderId    : String
-    let text        : String
-    let time        : Double
-    let isDelivered : Bool
-    let isRead      : Bool
-    let type        : String
+    let _id          : String?
+    let senderId    : String?
+    let text        : String?
+    let time        : Double?
+    let isDelivered : Bool?
+    let isRead      : Bool?
+    let type        : String?
 }

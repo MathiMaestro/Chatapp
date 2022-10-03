@@ -22,7 +22,10 @@ class ContactsVC: NCLoadingVC {
         return tableView
     }()
     
-    private var contactList : [UserData] = []
+    private var contactList : [UserData]    = []
+    private var searchResult : [UserData]   = []
+    private var isSearchEnabled : Bool      = false
+    private var searchText : String         = ""
     
     private var dataSource : UITableViewDiffableDataSource<DiffableDSSectionType,UserData>? = nil
     
@@ -32,18 +35,24 @@ class ContactsVC: NCLoadingVC {
         configureSearchController()
         configureUI()
         configureDataSource()
+        showLoadingView()
         getFriendsList()
+        configureNotificationObserver()
     }
     
-    private func getFriendsList() {
-        showLoadingView()
+    @objc func getFriendsList() {
         ContactsNetworkManager.shared.getFriendsList { [weak self] result in
             guard let self else { return }
             self.dismissLoadingView()
             switch result {
             case .success(let contactList):
                 self.contactList = contactList
-                self.updateView(on: contactList)
+                if self.isSearchEnabled {
+                    self.searchResult = contactList.filter({$0.userName.lowercased().contains(self.searchText.lowercased())})
+                    self.updateView(on: self.searchResult)
+                } else {
+                    self.updateView(on: contactList)
+                }
             case .failure(let error):
                 self.presentNCAlertViewInMainThread(title: "Oops..", message: error.rawValue, buttonTitle: "Ok")
                 if error == .invalidToken {
@@ -53,6 +62,15 @@ class ContactsVC: NCLoadingVC {
         }
     }
     
+    private func configureNotificationObserver() {
+        let newChatNotificationName     = Notification.Name(NotificationObserverName.newChatKey)
+        NotificationCenter.default.addObserver(self, selector: #selector(getFriendsList), name: newChatNotificationName, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     private func configureNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Contacts"
@@ -60,7 +78,7 @@ class ContactsVC: NCLoadingVC {
     
     private func configureSearchController() {
         let searchController                                    = UISearchController()
-        searchController.searchBar.placeholder                  = "enter a user name"
+        searchController.searchBar.placeholder                  = "Search for a user name"
         searchController.searchResultsUpdater                   = self
         searchController.obscuresBackgroundDuringPresentation   = false
         navigationItem.searchController                         = searchController
@@ -71,7 +89,7 @@ class ContactsVC: NCLoadingVC {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactListTableViewCell.reusableId, for: indexPath) as? ContactListTableViewCell, let self else {
                 return tableView.dequeueReusableCell(withIdentifier: ContactListTableViewCell.reusableId, for: indexPath)
             }
-            let userData = self.contactList[indexPath.item]
+            let userData = self.isSearchEnabled ? self.searchResult[indexPath.item] : self.contactList[indexPath.item]
             cell.updateView(with: userData)
             return cell
         })
@@ -96,10 +114,13 @@ extension ContactsVC : UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
+            isSearchEnabled = false
             updateView(on: contactList)
             return
         }
-        let searchResult = contactList.filter({$0.userName.lowercased().contains(searchText.lowercased())})
+        isSearchEnabled = true
+        self.searchText = searchText
+        searchResult = contactList.filter({$0.userName.lowercased().contains(searchText.lowercased())})
         updateView(on: searchResult)
     }
 }
