@@ -18,6 +18,7 @@ enum MessageType {
 enum NotificationObserverName {
     static let newMessageKey    = "newMessageKey"
     static let newChatKey       = "newChatKey"
+    static let messageTypingKey = "messageTypingKey"
 }
 
 class IOSocketManager {
@@ -68,10 +69,12 @@ class IOSocketManager {
             let messageType = self.getType(for: mode)
             switch messageType {
             case .typing:
-                print(jsonDict)
+                let notificationName = Notification.Name(NotificationObserverName.messageTypingKey)
+                NotificationCenter.default.post(name: notificationName, object: nil, userInfo: dataDict)
             case .newMessage:
+                guard let newMessageDict = self.prepareNewMessageData(jsonDict: dataDict) else { return }
                 let notificationName = Notification.Name(NotificationObserverName.newMessageKey)
-                NotificationCenter.default.post(name: notificationName, object: nil)
+                NotificationCenter.default.post(name: notificationName, object: nil, userInfo: newMessageDict)
             case .newChat:
                 guard let chat = self.getChatData(jsonDict: dataDict) else { return }
                 ChatUtils.shared.createNewChat(chat: chat)
@@ -83,6 +86,19 @@ class IOSocketManager {
                 print(jsonDict)
             }
         })
+    }
+    
+    private func prepareNewMessageData(jsonDict: [String:Any]) -> [String:Any]? {
+        var newMessageDict : [String:Any] = [:]
+        guard let chatId = jsonDict["chat_id"] as? String, let messageDict = jsonDict["message"] as? [String:Any], let data = NCNetworkUtils.getData(from: messageDict) else { return nil }
+        do {
+            let message                 = try NCNetworkUtils.decoder.decode(Message.self, from: data)
+            newMessageDict["chatId"]    = chatId
+            newMessageDict["message"]   = message
+            return newMessageDict
+        } catch {
+            return nil
+        }
     }
     
     private func getChatData(jsonDict: [String:Any]) -> Chat? {

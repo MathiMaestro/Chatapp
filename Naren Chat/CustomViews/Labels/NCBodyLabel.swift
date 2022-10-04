@@ -31,6 +31,13 @@ class NCBodyLabel: UILabel {
         self.font = font
     }
     
+    convenience init(textColor: UIColor, textAlignment: NSTextAlignment, font: UIFont, title: String) {
+        self.init(frame: .zero)
+        set(textColor: textColor, textAlignment: textAlignment)
+        setTitle(with: title)
+        self.font = font
+    }
+    
     private func configureProperties() {
         translatesAutoresizingMaskIntoConstraints = false
         

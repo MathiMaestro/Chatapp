@@ -14,16 +14,20 @@ class ChatListTableViewCell: UITableViewCell {
     private let profileImageView        = NCProfileImageView(frame: .zero)
     private let userNameLabel           = NCTitleLabel(textColor: .label, textAlignment: .left,font: .preferredFont(forTextStyle: .headline))
     private let lastMessageLabel        = NCBodyLabel(textColor: .secondaryLabel, textAlignment: .left,font: .preferredFont(forTextStyle: .subheadline))
+    private let typingLabel             = NCBodyLabel(textColor: .systemBlue, textAlignment: .left,font: .preferredFont(forTextStyle: .subheadline),title: "typing...")
     private let timeLabel               = NCBodyLabel(textColor: .secondaryLabel, textAlignment: .right,font: .preferredFont(forTextStyle: .subheadline))
     private let unReadChatCountLabel    = NCMsgCountLabel(textColor: .white, textAlignment: .center)
     
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        userNameLabel.text          = nil
-        lastMessageLabel.text       = nil
-        timeLabel.text              = nil
-        unReadChatCountLabel.text   = nil
+        userNameLabel.text              = nil
+        lastMessageLabel.text           = nil
+        timeLabel.text                  = nil
+        unReadChatCountLabel.text       = nil
+        typingLabel.isHidden            = true
+        lastMessageLabel.isHidden       = false
+        unReadChatCountLabel.isHidden   = false
         
         profileImageView.resetImage()
     }
@@ -34,7 +38,7 @@ class ChatListTableViewCell: UITableViewCell {
     }
     
     private func configureUI() {
-        contentView.addSubViews(profileImageView,userNameLabel,lastMessageLabel,timeLabel,unReadChatCountLabel)
+        contentView.addSubViews(profileImageView,userNameLabel,lastMessageLabel,timeLabel,unReadChatCountLabel,typingLabel)
         
         let padding : CGFloat = 10
         
@@ -58,19 +62,37 @@ class ChatListTableViewCell: UITableViewCell {
             lastMessageLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
             lastMessageLabel.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 6),
             lastMessageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -70),
+            
+            typingLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
+            typingLabel.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 6),
+            typingLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -70),
         ])
         
         profileImageView.layer.cornerRadius     = 22
         profileImageView.layer.masksToBounds    = true
+        typingLabel.isHidden = true
     }
     
     func updateView(with chat: Chat) {
         guard let sender = chat.getSender() else { return }
-        timeLabel.text              = chat.lastActiveTime.convertToDate()?.convertToString()
+        timeLabel.text              = chat.lastMessage.time?.convertToDate()?.convertToString()
         unReadChatCountLabel.text   = chat.unreadCount > 0 ? "\(chat.unreadCount)" : nil
         userNameLabel.text          = sender.userName
         lastMessageLabel.text       = chat.lastMessage.text
         profileImageView.downloadImage(for: sender.imgUrl)
+    }
+    
+    func updateTyping(for chat: Chat) {
+        typingLabel.isHidden            = !(chat.isTyping ?? true)
+        lastMessageLabel.isHidden       = (chat.isTyping ?? false)
+        unReadChatCountLabel.isHidden   = (chat.isTyping ?? false)
+    }
+    
+    func updateViewForNewMessage(for chat: Chat) {
+        timeLabel.text              = chat.lastMessage.time?.convertToDate()?.convertToString()
+        unReadChatCountLabel.text   = chat.unreadCount > 0 ? "\(chat.unreadCount)" : nil
+        lastMessageLabel.text       = chat.lastMessage.text
+        updateTyping(for: chat)
     }
     
     required init?(coder: NSCoder) {
