@@ -88,9 +88,41 @@ extension SettingsVC : UITableViewDelegate, UITableViewDataSource {
         guard indexPath.section != 0, let type = settings[indexPath.item] else { return }
         switch type {
             case .accountDelete:
-                print("hello")
+            DispatchQueue.main.async { self.presentDeleteAlertVC() }
             default:
                 break
+        }
+    }
+    
+    private func presentDeleteAlertVC() {
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            guard let self else { return }
+            self.showLoadingView()
+            self.deleteAccount()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let alertVC = UIAlertController(title: "Delete Account", message: "Are you sure. Do you want to delete this account?", preferredStyle: .alert)
+        alertVC.addAction(cancelAction)
+        alertVC.addAction(deleteAction)
+        present(alertVC, animated: true)
+    }
+    
+    private func deleteAccount() {
+        LoginNetworkManager.shared.deleteAccount { [weak self] result in
+            guard let self else { return }
+            self.dismissLoadingView()
+            switch result {
+            case .success(let success):
+                if success {
+                    self.presentNCAlertViewInMainThread(title: "We miss you", message: "Your account deleted successfully", buttonTitle: "Ok")
+                    UserDetailUtil.shared.removeUserData()
+                    SessionUtil.goToLogin()
+                } else {
+                    self.presentNCAlertViewInMainThread(title: "Oops..", message: "Sorry. Unable to delete your account", buttonTitle: "Ok")
+                }
+            case .failure(let error):
+                self.presentNCAlertViewInMainThread(title: "Oops..", message: error.rawValue, buttonTitle: "Ok")
+            }
         }
     }
 }

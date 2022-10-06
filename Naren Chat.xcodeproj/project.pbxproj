@@ -50,6 +50,8 @@
 		F4C9A2B228E0F0B0007AE983 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C9A2B128E0F0B0007AE983 /* SettingsVC.swift */; };
 		F4C9A2B428E0F0CD007AE983 /* ContactsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C9A2B328E0F0CD007AE983 /* ContactsVC.swift */; };
 		F4C9A2B628E1DA5F007AE983 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C9A2B528E1DA5F007AE983 /* WebSocketManager.swift */; };
+		F4CC427128EF717B00A06DB5 /* ChatNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CC427028EF717B00A06DB5 /* ChatNetworkManager.swift */; };
+		F4CC427328EF719200A06DB5 /* MessageModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4CC427228EF719200A06DB5 /* MessageModal.swift */; };
 		F4F097E828D5330D00F4BABD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F097E728D5330D00F4BABD /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
@@ -101,6 +103,8 @@
 		F4C9A2B128E0F0B0007AE983 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		F4C9A2B328E0F0CD007AE983 /* ContactsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsVC.swift; sourceTree = "<group>"; };
 		F4C9A2B528E1DA5F007AE983 /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
+		F4CC427028EF717B00A06DB5 /* ChatNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatNetworkManager.swift; sourceTree = "<group>"; };
+		F4CC427228EF719200A06DB5 /* MessageModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModal.swift; sourceTree = "<group>"; };
 		F4F097E728D5330D00F4BABD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,6 +143,7 @@
 				F4292D7828D114B70025F98F /* NCAPI.swift */,
 				F43C644028DDAE1500E62E43 /* UserModal.swift */,
 				F4ABD2EB28E4AC40003EB5EE /* ChatListModal.swift */,
+				F4CC427228EF719200A06DB5 /* MessageModal.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -151,6 +156,7 @@
 				F43C642A28D7F9B000E62E43 /* LoginNetworkManager.swift */,
 				F4C9A2B528E1DA5F007AE983 /* WebSocketManager.swift */,
 				F4C7114828E8E1330010E33C /* ContactsNetworkManager.swift */,
+				F4CC427028EF717B00A06DB5 /* ChatNetworkManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -422,11 +428,13 @@
 				F43C641D28D695F200E62E43 /* NCAlertVC.swift in Sources */,
 				F43C641F28D69E6100E62E43 /* NCAlertContainerView.swift in Sources */,
 				F43C642328D6A2F000E62E43 /* UIViewControllerExtension.swift in Sources */,
+				F4CC427128EF717B00A06DB5 /* ChatNetworkManager.swift in Sources */,
 				F4C7114528E8CDE00010E33C /* NCLogoutButton.swift in Sources */,
 				F4292D7928D114B70025F98F /* NCAPI.swift in Sources */,
 				F4C7114728E8DFB80010E33C /* SettingsUserTableViewCell.swift in Sources */,
 				F43C642728D70B1700E62E43 /* PersistentManager.swift in Sources */,
 				F4C9A2B628E1DA5F007AE983 /* WebSocketManager.swift in Sources */,
+				F4CC427328EF719200A06DB5 /* MessageModal.swift in Sources */,
 				F42F256528E8911A00E9130E /* DoubleEntension.swift in Sources */,
 				F43C642D28D7FA3B00E62E43 /* NCNetwork.swift in Sources */,
 				F43C642528D6CC6100E62E43 /* NCLoadingVC.swift in Sources */,

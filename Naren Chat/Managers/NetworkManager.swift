@@ -11,14 +11,9 @@ import Foundation
 class NetworkManager {
     static let shared = NetworkManager()
     
-    func makeRequest(with urlRequest: URLRequest ,body: Data? = nil, completed: @escaping (Result<Data,NCError>) -> Void) {
-        var urlRequest = urlRequest
+    func makeRequest(with url: URL, httpMethod: HttpMethod, body: Data? = nil, token: String? = nil, completed: @escaping (Result<Data,NCError>) -> Void) {
+        let urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: httpMethod, token: token, body: body)
         
-        if let body {
-            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            urlRequest.httpBody = body
-        }
-        urlRequest.timeoutInterval = 30
         let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
                 let nsError = error as NSError

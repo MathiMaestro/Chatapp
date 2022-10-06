@@ -79,7 +79,7 @@ class IOSocketManager {
                 guard let chat = self.getChatData(jsonDict: dataDict) else { return }
                 ChatUtils.shared.createNewChat(chat: chat)
                 let notificationName = Notification.Name(NotificationObserverName.newChatKey)
-                NotificationCenter.default.post(name: notificationName, object: nil)
+                NotificationCenter.default.post(name: notificationName, object: nil, userInfo: ["chat":chat])
             case .status:
                 print(jsonDict)
             case .none:

@@ -26,6 +26,7 @@ class ContactsVC: NCLoadingVC {
     private var searchResult : [UserData]   = []
     private var isSearchEnabled : Bool      = false
     private var searchText : String         = ""
+    private var isFirstTime : Bool          = true
     
     private var dataSource : UITableViewDiffableDataSource<DiffableDSSectionType,UserData>? = nil
     
@@ -38,6 +39,16 @@ class ContactsVC: NCLoadingVC {
         showLoadingView()
         getFriendsList()
         configureNotificationObserver()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
+        if !isFirstTime {
+            getFriendsList()
+        } else {
+            isFirstTime = false
+        }
     }
     
     @objc func getFriendsList() {
@@ -64,7 +75,16 @@ class ContactsVC: NCLoadingVC {
     
     private func configureNotificationObserver() {
         let newChatNotificationName     = Notification.Name(NotificationObserverName.newChatKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(getFriendsList), name: newChatNotificationName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateContact(notification:)), name: newChatNotificationName, object: nil)
+    }
+    
+    @objc func updateContact(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+              let chat = userInfo["chat"] as? Chat,
+              let sender = chat.getSender(),
+              contactList.contains(where: {$0.userName != sender.userName}) else
+        { return }
+        getFriendsList()
     }
     
     deinit {

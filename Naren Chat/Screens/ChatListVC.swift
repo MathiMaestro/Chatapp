@@ -15,10 +15,7 @@ class ChatListVC: NCLoadingVC {
     private var isDataAvailable : Bool  = true
     private var isSearchEnabled: Bool   = false
     private var searchBarText: String   = ""
-    
-    private var editBarButtonItem: UIBarButtonItem?
-    private var doneBarButtonItem: UIBarButtonItem?
-    private var deleteBarButtonItem: UIBarButtonItem?
+    private var isFirstTime : Bool      = true
     
     private let tableView : UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -48,7 +45,11 @@ class ChatListVC: NCLoadingVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateChatList()
+        navigationController?.navigationBar.prefersLargeTitles = true
+        if !isFirstTime {
+            updateChatList()
+        }
+        isFirstTime = false
     }
     
     deinit {
@@ -61,29 +62,7 @@ extension ChatListVC {
     
     private func configureNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
-        editBarButtonItem                   = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editOptionTapped))
-        doneBarButtonItem                   = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneOptionTapped))
-        deleteBarButtonItem                 = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteButtonTapped))
-        navigationItem.leftBarButtonItem    = editBarButtonItem
         title = "Chats"
-    }
-    
-    @objc func editOptionTapped() {
-        tableView.setEditing(true, animated: true)
-        navigationItem.leftBarButtonItem    = doneBarButtonItem
-        navigationItem.rightBarButtonItem   = deleteBarButtonItem
-    }
-    
-    @objc func doneOptionTapped() {
-        tableView.setEditing(false, animated: true)
-        navigationItem.leftBarButtonItem = editBarButtonItem
-    }
-    
-    @objc func deleteButtonTapped() {
-        let indexPaths = tableView.indexPathsForSelectedRows
-        tableView.setEditing(false, animated: true)
-        navigationItem.leftBarButtonItem    = editBarButtonItem
-        navigationItem.rightBarButtonItem   = nil
     }
     
     private func configureSearchController() {
@@ -177,13 +156,13 @@ extension ChatListVC : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let chatList    = isSearchEnabled ? searchChatList : chatList
-        let chatId      = chatList[indexPath.item]._id
-        showChatView(chatId: chatId)
+        let chat      = chatList[indexPath.item]
+        showChatView(chat: chat)
     }
     
-    private func showChatView(chatId : String) {
+    private func showChatView(chat : Chat) {
         DispatchQueue.main.async {
-            let chatVC = ChatVC(chatId: chatId)
+            let chatVC = ChatVC(chat: chat)
             self.navigationController?.pushViewController(chatVC, animated: true)
         }
     }

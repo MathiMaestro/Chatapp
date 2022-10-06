@@ -29,11 +29,7 @@ class Chat : Codable, Hashable {
     }
     
     func getSender() -> Participant? {
-        if let participant = participants.filter({$0._id == lastMessage.senderId}).first {
-            return participant
-        } else {
-            return participants.filter({$0._id != UserDetailUtil.shared.userData?.id}).first
-        }
+        return participants.filter({$0._id != UserDetailUtil.shared.userData?.id}).first
     }
     
     static func == (lhs: Chat, rhs: Chat) -> Bool {
@@ -66,29 +62,5 @@ class Participant : Codable,Hashable {
         hasher.combine(_id)
         hasher.combine(userName)
         hasher.combine(imgUrl)
-    }
-}
-
-class Message : Codable, Hashable {
-    let _id          : String?
-    let senderId    : String?
-    let text        : String?
-    let time        : Double?
-    let isDelivered : Bool?
-    let isRead      : Bool?
-    let type        : String?
-    
-    static func == (lhs: Message, rhs: Message) -> Bool {
-        lhs._id == rhs._id && lhs.senderId == rhs.senderId && lhs.text == rhs.text && lhs.time == rhs.time && lhs.isDelivered == rhs.isDelivered && lhs.isRead == rhs.isRead && lhs.type == rhs.type
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(_id)
-        hasher.combine(senderId)
-        hasher.combine(text)
-        hasher.combine(time)
-        hasher.combine(isDelivered)
-        hasher.combine(isRead)
-        hasher.combine(type)
     }
 }

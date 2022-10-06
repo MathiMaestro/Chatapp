@@ -19,4 +19,5 @@ enum NCError : String, Error {
     case registerSuccess    = "Account created successfully! Please go to login page"
     case invalidToken       = "Session expired. Logging out"
     case unknown            = "Something went wrong! Please try again."
+    case deleteFailure      = "Sorry!. Something went wrong! Unable to delete your account."
 }

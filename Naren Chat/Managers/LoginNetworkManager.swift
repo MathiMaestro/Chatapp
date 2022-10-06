@@ -16,9 +16,8 @@ class LoginNetworkManager {
             completed(.failure(.invalidToken))
             return
         }
-        var urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: .get)
-        urlRequest.setValue(token, forHTTPHeaderField: "Authorization")
-        NetworkManager.shared.makeRequest(with: urlRequest) { result in
+        
+        NetworkManager.shared.makeRequest(with: url, httpMethod: .get, token: token) { result in
             switch result {
             case .success(let data):
                 do {
@@ -40,12 +39,12 @@ class LoginNetworkManager {
     }
     
     func checkIsUserDetailAlreadyExist(userDetail: String, isEmail: Bool , completed: @escaping (Result<Bool,NCError>) -> Void) {
-        guard let url = URL(string: (isEmail ? NCAPI.getAPI(for: .checkEmailId) : NCAPI.getAPI(for: .checkUsername)) + "\(userDetail)") else {
+        guard let url = URL(string: NCAPI.getAPI(for: isEmail ? .checkEmailId(emailId: userDetail) : .checkUsername(userName: userDetail))) else {
             completed(.failure(.unknown))
             return
         }
-        let urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: .get)
-        NetworkManager.shared.makeRequest(with: urlRequest) { result in
+        
+        NetworkManager.shared.makeRequest(with: url, httpMethod: .get) { result in
             switch result {
             case .success(let data):
                 do {
@@ -90,8 +89,6 @@ class LoginNetworkManager {
             return
         }
         
-        let urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: .post)
-        
         let bodyJson : [String : Any] = ["user_name":"\(userName)",
                                      "pass":"\(password)"
         ]
@@ -101,7 +98,7 @@ class LoginNetworkManager {
             return
         }
         
-        NetworkManager.shared.makeRequest(with: urlRequest, body: body) { result in
+        NetworkManager.shared.makeRequest(with: url, httpMethod: .post, body: body) { result in
             switch result {
             case .success(let data):
                 do {
@@ -156,8 +153,6 @@ class LoginNetworkManager {
             return
         }
         
-        let urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: .post)
-        
         let bodyJson : [String : Any] = ["user_name":"\(username)",
                                      "password":"\(password)",
                                      "email_id":"\(emailId)"
@@ -168,7 +163,7 @@ class LoginNetworkManager {
             return
         }
         
-        NetworkManager.shared.makeRequest(with: urlRequest, body: body) { result in
+        NetworkManager.shared.makeRequest(with: url, httpMethod: .post, body: body) { result in
             switch result {
             case .success(let data):
                 do {
@@ -181,6 +176,37 @@ class LoginNetworkManager {
                         completed(.success(isRegistered))
                     } else {
                         completed(.failure(.registerFail))
+                    }
+                }
+                catch {
+                    completed(.failure(.invalidResponse))
+                }
+            case .failure(let error):
+                completed(.failure(error))
+            }
+        }
+    }
+    
+    func deleteAccount(completed: @escaping (Result<Bool,NCError>) -> Void) {
+        
+        guard let url = URL(string: NCAPI.getAPI(for: .delete)), let token = PersistenceManager.token else {
+            completed(.failure(.invalidToken))
+            return
+        }
+        
+        NetworkManager.shared.makeRequest(with: url, httpMethod: .delete, token: token) { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+                    guard let jsonDict = jsonData as? [String:Any], let data = jsonDict["data"] as? [String:Any], let code = data["code"] as? String else {
+                        completed(.failure(.invalidResponse))
+                        return
+                    }
+                    if code == "300" {
+                        completed(.success(true))
+                    } else {
+                        completed(.failure(.deleteFailure))
                     }
                 }
                 catch {

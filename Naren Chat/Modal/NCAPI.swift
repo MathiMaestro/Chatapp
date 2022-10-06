@@ -10,11 +10,13 @@ import Foundation
 enum APIType {
     case login
     case register
-    case checkUsername
-    case checkEmailId
+    case checkUsername(userName: String)
+    case checkEmailId(emailId: String)
     case isValidUser
-    case chatList
+    case chatList(limit: Int)
     case friendList
+    case delete
+    case messages(chatId: String,limit: Int)
 }
 
 class NCAPI {
@@ -30,16 +32,20 @@ class NCAPI {
             api += "/login"
         case .register:
             api += "/register"
-        case .checkUsername:
-            api += "/user/check?user_name="
-        case .checkEmailId:
-            api += "/user/check?email_id="
+        case .checkUsername(let userName):
+            api += "/user/check?user_name=\(userName)"
+        case .checkEmailId(let emailId):
+            api += "/user/check?email_id=\(emailId)"
         case .isValidUser:
             api += "/user"
-        case .chatList:
-            api += "/chats?limit="
+        case .chatList(let limit):
+            api += "/chats?limit=\(limit)"
         case .friendList:
             api += "/user/friends"
+        case .delete:
+            api += "/user"
+        case .messages(let chatId, let limit):
+            api += "/chats/\(chatId)/messages?limit=\(limit)"
         }
         
         return api

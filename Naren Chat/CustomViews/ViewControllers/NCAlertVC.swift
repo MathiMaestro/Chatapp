@@ -9,16 +9,16 @@ import UIKit
 
 class NCAlertVC: UIViewController {
     
-    let containerView   = NCAlertContainerView()
-    let titleLabel      = NCTitleLabel(textColor: .label, textAlignment: .center)
-    let messageLabel    = NCBodyLabel(textColor: .secondaryLabel, textAlignment: .center)
-    let actionButton    = NCButton(buttonColor: .systemPink)
+    private let containerView           = NCAlertContainerView()
+    private let titleLabel              = NCTitleLabel(textColor: .label, textAlignment: .center)
+    private let messageLabel            = NCBodyLabel(textColor: .secondaryLabel, textAlignment: .center)
+    private let actionButton            = NCButton(buttonColor: .systemPink)
     
-    var alertTitle: String?
-    var message: String?
-    var buttonTitle: String?
+    private var alertTitle: String?
+    private var message: String?
+    private var buttonTitle: String?
     
-    let padding: CGFloat = 20
+    private let padding: CGFloat = 20
     
     
     init(title: String, message: String, buttonTitle: String) {
@@ -46,7 +46,7 @@ class NCAlertVC: UIViewController {
     }
     
     
-    func configureContainerView() {
+    private func configureContainerView() {
         NSLayoutConstraint.activate([
             containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -56,7 +56,7 @@ class NCAlertVC: UIViewController {
     }
     
     
-    func configureTitleLabel() {
+    private func configureTitleLabel() {
         titleLabel.setTitle(with: alertTitle ?? "Something went wrong")
         
         NSLayoutConstraint.activate([
@@ -68,7 +68,7 @@ class NCAlertVC: UIViewController {
     }
     
     
-    func configureActionButton() {
+    private func configureActionButton() {
         actionButton.set(title: buttonTitle ?? "OK")
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
         
@@ -81,7 +81,7 @@ class NCAlertVC: UIViewController {
     }
     
     
-    func configureMessageLabel() {
+    private func configureMessageLabel() {
         messageLabel.setTitle(with: message ?? "Unable to complete request")
         messageLabel.numberOfLines  = 4
         

@@ -19,14 +19,12 @@ class ChatUtils {
     
     func getChatList(listCount : Int, completed: @escaping (Result<ChatListData,NCError>) -> Void) {
         
-        guard let url = URL(string: NCAPI.getAPI(for: .chatList) + "\(listCount)"), let token = PersistenceManager.token else {
+        guard let url = URL(string: NCAPI.getAPI(for: .chatList(limit: listCount))), let token = PersistenceManager.token else {
             completed(.failure(.unknown))
             return
         }
-        var urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: .get)
-        urlRequest.setValue(token, forHTTPHeaderField: "Authorization")
         
-        NetworkManager.shared.makeRequest(with: urlRequest) { [weak self] result in
+        NetworkManager.shared.makeRequest(with: url, httpMethod: .get, token: token) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(let data):
