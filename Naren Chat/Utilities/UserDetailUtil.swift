@@ -23,8 +23,7 @@ class UserDetailUtil {
     }
     
     func getUserDetails(completed: @escaping (NCError?) -> Void) {
-        LoginNetworkManager.shared.getUserDetails { [weak self] result in
-            guard let self else { return }
+        LoginNetworkManager.shared.getUserDetails { [unowned self] result in
             switch result {
             case .success(let userData):
                 self.userData = userData

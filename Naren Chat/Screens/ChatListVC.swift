@@ -45,7 +45,8 @@ class ChatListVC: NCLoadingVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = true
+        tabBarController?.tabBar.isHidden                       = false
+        navigationController?.navigationBar.prefersLargeTitles  = true
         if !isFirstTime {
             updateChatList()
         }
@@ -86,8 +87,7 @@ extension ChatListVC {
     
     @objc func getChatList() {
         showLoadingView()
-        ChatUtils.shared.getChatList(listCount: listCount) { [weak self] result in
-            guard let self else { return }
+        ChatUtils.shared.getChatList(listCount: listCount) { [unowned self] result in
             self.dismissLoadingView()
             switch result {
             case .success(let chatListData):
@@ -113,8 +113,8 @@ extension ChatListVC {
     }
     
     private func configureDataSource() {
-        dataSource = .init(tableView: self.tableView, cellProvider: { [weak self] (tableView, indexPath, itemIdentifier) -> UITableViewCell in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatListTableViewCell.reusableId, for: indexPath) as? ChatListTableViewCell, let self else {
+        dataSource = .init(tableView: self.tableView, cellProvider: { [unowned self] (tableView, indexPath, itemIdentifier) -> UITableViewCell in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatListTableViewCell.reusableId, for: indexPath) as? ChatListTableViewCell else {
                 return tableView.dequeueReusableCell(withIdentifier: ChatListTableViewCell.reusableId, for: indexPath)
             }
             let chat = self.isSearchEnabled ? self.searchChatList[indexPath.item] : self.chatList[indexPath.item]

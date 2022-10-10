@@ -23,17 +23,17 @@ class LoginNetworkManager {
                 do {
                     let jsonData = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
                     guard let jsonDict = jsonData as? [String:Any], let dataJson = jsonDict["data"] as? [String:Any], let data = NCNetworkUtils.getData(from: dataJson) else {
-                        completed(.failure(.invalidToken))
+                        completed(.failure(.invalidResponse))
                         return
                     }
                     let userData = try NCNetworkUtils.decoder.decode(UserData.self, from: data)
                     completed(.success(userData))
                 }
                 catch {
-                    completed(.failure(.invalidToken))
+                    completed(.failure(.invalidResponse))
                 }
-            case .failure(_):
-                completed(.failure(.invalidToken))
+            case .failure(let error):
+                completed(.failure(error))
             }
         }
     }
@@ -119,8 +119,7 @@ class LoginNetworkManager {
     }
     
     func signupWith(username: String, emailId: String, password: String, completed: @escaping (Result<Bool,NCError>) -> Void) {
-        checkIsUserDetailAlreadyExist(userDetail: username, isEmail: false) { [weak self] result in
-            guard let self else { return }
+        checkIsUserDetailAlreadyExist(userDetail: username, isEmail: false) { [unowned self] result in
             switch result {
             case .success(let isUserExist):
                 if isUserExist {

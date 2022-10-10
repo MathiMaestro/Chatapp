@@ -35,6 +35,11 @@ class ChatListTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
+        configureProperties()
+    }
+    
+    private func configureProperties() {
+        selectionStyle = .none
     }
     
     private func configureUI() {
@@ -70,7 +75,7 @@ class ChatListTableViewCell: UITableViewCell {
         
         profileImageView.layer.cornerRadius     = 22
         profileImageView.layer.masksToBounds    = true
-        typingLabel.isHidden = true
+        typingLabel.isHidden                    = true
     }
     
     func updateView(with chat: Chat) {

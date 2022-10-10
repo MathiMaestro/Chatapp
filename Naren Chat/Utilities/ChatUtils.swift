@@ -24,8 +24,7 @@ class ChatUtils {
             return
         }
         
-        NetworkManager.shared.makeRequest(with: url, httpMethod: .get, token: token) { [weak self] result in
-            guard let self else { return }
+        NetworkManager.shared.makeRequest(with: url, httpMethod: .get, token: token) { [unowned self] result in
             switch result {
             case .success(let data):
                 do {

@@ -37,10 +37,6 @@ class NCMsgCountLabel: UILabel {
         self.textAlignment  = textAlignment
     }
     
-    override func draw(_ rect: CGRect) {
-        super.draw(rect.inset(by: edgeInset))
-    }
-    
     override var intrinsicContentSize: CGSize {
         let size = super.intrinsicContentSize
         return CGSize(width: size.width + edgeInset.left + edgeInset.right, height: size.height + edgeInset.top + edgeInset.bottom)

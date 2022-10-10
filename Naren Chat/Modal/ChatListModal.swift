@@ -24,7 +24,9 @@ class Chat : Codable, Hashable {
     
     func updateLastMessage(message: Message) {
         self.lastMessage    = message
-        self.unreadCount    += 1
+        if message.senderId != UserDetailUtil.shared.userData?.id {
+            self.unreadCount    += 1
+        }
         self.isTyping       = false
     }
     

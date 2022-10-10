@@ -43,7 +43,8 @@ class ContactsVC: NCLoadingVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.prefersLargeTitles  = true
+        tabBarController?.tabBar.isHidden                       = false
         if !isFirstTime {
             getFriendsList()
         } else {
@@ -52,8 +53,7 @@ class ContactsVC: NCLoadingVC {
     }
     
     @objc func getFriendsList() {
-        ContactsNetworkManager.shared.getFriendsList { [weak self] result in
-            guard let self else { return }
+        ContactsNetworkManager.shared.getFriendsList { [unowned self] result in
             self.dismissLoadingView()
             switch result {
             case .success(let contactList):
@@ -105,8 +105,8 @@ class ContactsVC: NCLoadingVC {
     }
     
     private func configureDataSource() {
-        dataSource = .init(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, itemIdentifier in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactListTableViewCell.reusableId, for: indexPath) as? ContactListTableViewCell, let self else {
+        dataSource = .init(tableView: tableView, cellProvider: { [unowned self] tableView, indexPath, itemIdentifier in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactListTableViewCell.reusableId, for: indexPath) as? ContactListTableViewCell else {
                 return tableView.dequeueReusableCell(withIdentifier: ContactListTableViewCell.reusableId, for: indexPath)
             }
             let userData = self.isSearchEnabled ? self.searchResult[indexPath.item] : self.contactList[indexPath.item]

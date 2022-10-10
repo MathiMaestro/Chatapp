@@ -35,8 +35,7 @@ class NCProfileImageView: UIImageView {
         
         guard let url = URL(string: urlString) else { return }
         
-        NetworkManager.shared.makeRequest(with: url, httpMethod: .get) { [weak self] result in
-            guard let self else { return }
+        NetworkManager.shared.makeRequest(with: url, httpMethod: .get) { [unowned self] result in
             switch result {
             case .success(let data):
                 if let profileImage = UIImage(data: data) {

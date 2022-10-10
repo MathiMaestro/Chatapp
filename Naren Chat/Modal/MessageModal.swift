@@ -7,6 +7,20 @@
 
 import Foundation
 
+
+struct MessagesOrderedData {
+    let sectionData : [String: [Message]]
+    let sectionOrder : [String]
+    let hasMore : Bool
+    
+    init(sectionData: [String: [Message]] = [:], sectionOrder: [String] = [], hasMore: Bool = true) {
+        self.sectionData = sectionData
+        self.sectionOrder = sectionOrder
+        self.hasMore = hasMore
+    }
+}
+
+
 class MessagesData : Codable {
     let messages: [Message]
     let hasMore : Bool
@@ -28,6 +42,10 @@ class Message : Codable, Hashable {
     
     static func == (lhs: Message, rhs: Message) -> Bool {
         lhs._id == rhs._id && lhs.senderId == rhs.senderId && lhs.text == rhs.text && lhs.time == rhs.time && lhs.isDelivered == rhs.isDelivered && lhs.isRead == rhs.isRead && lhs.type == rhs.type
+    }
+    
+    func isReceived() -> Bool {
+         return senderId != UserDetailUtil.shared.userData?.id
     }
     
     func hash(into hasher: inout Hasher) {

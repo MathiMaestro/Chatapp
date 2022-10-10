@@ -95,8 +95,7 @@ extension SettingsVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     private func presentDeleteAlertVC() {
-        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
-            guard let self else { return }
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [unowned self] _ in
             self.showLoadingView()
             self.deleteAccount()
         }
@@ -108,8 +107,7 @@ extension SettingsVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     private func deleteAccount() {
-        LoginNetworkManager.shared.deleteAccount { [weak self] result in
-            guard let self else { return }
+        LoginNetworkManager.shared.deleteAccount { [unowned self] result in
             self.dismissLoadingView()
             switch result {
             case .success(let success):

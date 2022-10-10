@@ -10,7 +10,7 @@ import Foundation
 extension Double {
     
     func convertToDate() -> Date? {
-        return Date(timeIntervalSince1970: TimeInterval(self/1000))
+        return Date(timeIntervalSince1970: self/1000)
     }
     
 }

@@ -9,6 +9,8 @@ import UIKit
 
 class NCTextField: UITextField {
     
+    let padding = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         configureProperties()
@@ -17,6 +19,12 @@ class NCTextField: UITextField {
     convenience init(placeHolderName: String) {
         self.init(frame: .zero)
         configurePropertyWith(placeHolderName: placeHolderName)
+    }
+    
+    convenience init(placeHolderName: String, backgroundColor: UIColor) {
+        self.init(frame: .zero)
+        configurePropertyWith(placeHolderName: placeHolderName)
+        self.backgroundColor = backgroundColor
     }
     
     private func configureProperties() {
@@ -28,7 +36,7 @@ class NCTextField: UITextField {
             
         textColor               = .label
         tintColor               = .label
-        textAlignment           = .center
+        textAlignment           = .left
             
         backgroundColor         = .tertiarySystemBackground
         autocorrectionType      = .no
@@ -42,10 +50,6 @@ class NCTextField: UITextField {
     }
     
     func configurePropertyForPassword() {
-        setupVisiblityButton()
-    }
-    
-    private func setupVisiblityButton() {
         self.isSecureTextEntry  = true
         let button              = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         button.contentMode      = .center
@@ -67,6 +71,18 @@ class NCTextField: UITextField {
     override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
         return CGRect(x: bounds.width - 40, y: 0, width: 30 , height: bounds.height)
         }
+
+    override open func textRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+
+    override open func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+
+    override open func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
