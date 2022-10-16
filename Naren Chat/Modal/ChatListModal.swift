@@ -8,21 +8,31 @@
 import Foundation
 
 class ChatListData : Codable {
-    let chats   : [Chat]
-    let hasMore : Bool
+    var chats   : [Chat]
+    var hasMore : Bool
 }
 
-class Chat : Codable, Hashable {
-    let _id              : String
+struct Chat : Codable, Hashable {
+    let _id             : String
     let participants    : [Participant]
     let totalMessages   : Int
     var unreadCount     : Int
     var lastMessage     : Message
     let createdTime     : Double
     let lastActiveTime  : Double
-    var isTyping        : Bool?
+    var isTyping        : Bool? = false
     
-    func updateLastMessage(message: Message) {
+    init(_id: String, participants: [Participant], totalMessages: Int, unreadCount: Int, lastMessage: Message, createdTime: Double, lastActiveTime: Double) {
+        self._id = _id
+        self.participants = participants
+        self.totalMessages = totalMessages
+        self.unreadCount = unreadCount
+        self.lastMessage = lastMessage
+        self.createdTime = createdTime
+        self.lastActiveTime = lastActiveTime
+    }
+    
+    mutating func updateLastMessage(message: Message) {
         self.lastMessage    = message
         if message.senderId != UserDetailUtil.shared.userData?.id {
             self.unreadCount    += 1
@@ -35,7 +45,7 @@ class Chat : Codable, Hashable {
     }
     
     static func == (lhs: Chat, rhs: Chat) -> Bool {
-        lhs._id == rhs._id && lhs.participants == rhs.participants && lhs.totalMessages == rhs.totalMessages && lhs.unreadCount == rhs.unreadCount && lhs.lastMessage == rhs.lastMessage && lhs.createdTime == rhs.createdTime && lhs.lastActiveTime == rhs.lastActiveTime && lhs.isTyping == rhs.isTyping
+        lhs._id == rhs._id && lhs.participants == rhs.participants && lhs.totalMessages == rhs.totalMessages && lhs.unreadCount == rhs.unreadCount && lhs.lastMessage == rhs.lastMessage && lhs.createdTime == rhs.createdTime && lhs.lastActiveTime == rhs.lastActiveTime
     }
     
     func hash(into hasher: inout Hasher) {
@@ -46,7 +56,6 @@ class Chat : Codable, Hashable {
         hasher.combine(lastMessage)
         hasher.combine(createdTime)
         hasher.combine(lastActiveTime)
-        hasher.combine(isTyping)
     }
     
 }
@@ -55,6 +64,12 @@ class Participant : Codable,Hashable {
     let _id          : String
     let userName    : String
     let imgUrl      : String
+    
+    init(_id: String, userName: String, imgUrl: String) {
+        self._id = _id
+        self.userName = userName
+        self.imgUrl = imgUrl
+    }
     
     static func == (lhs: Participant, rhs: Participant) -> Bool {
         lhs._id == rhs._id && lhs.userName == rhs.userName &&  lhs.imgUrl == rhs.imgUrl

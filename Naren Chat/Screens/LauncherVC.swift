@@ -95,14 +95,21 @@ class LauncherVC: NCLoadingVC {
     }
     
     private func getUserDetails() {
-        UserDetailUtil.shared.getUserDetails { error in
+        UserDetailUtil.shared.getUserDetails { [unowned self] error in
             if let error {
                 self.presentNCAlertViewInMainThread(title: "Oops..", message: error.rawValue, buttonTitle: "Ok")
                 UserDetailUtil.shared.removeUserData()
                 self.goToLoginPage()
             } else {
                 IOSocketManager.shared.connectSocket()
-                self.showChatListVC()
+                ContactsUtils.shared.fetchFriendsList { [unowned self] result in
+                    switch result {
+                    case .success(_):
+                        self.showChatListVC()
+                    case .failure(let error):
+                        self.goToLoginPage(title: "Oops..", message: error.rawValue)
+                    }
+                }
             }
         }
     }
@@ -114,10 +121,10 @@ class LauncherVC: NCLoadingVC {
         }
     }
     
-    private func goToLoginPage() {
+    private func goToLoginPage(title : String? = "", message: String? = nil) {
         DispatchQueue.main.async {
             guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
-            window.rootViewController = UINavigationController(rootViewController: LoginVC())
+            window.rootViewController = UINavigationController(rootViewController: LoginVC(title: title, message: message))
         }
     }
 }

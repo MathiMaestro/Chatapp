@@ -46,7 +46,7 @@
 		F4C7114328E8B53D0010E33C /* NCMsgCountLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114228E8B53D0010E33C /* NCMsgCountLabel.swift */; };
 		F4C7114528E8CDE00010E33C /* NCLogoutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114428E8CDE00010E33C /* NCLogoutButton.swift */; };
 		F4C7114728E8DFB80010E33C /* SettingsUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114628E8DFB80010E33C /* SettingsUserTableViewCell.swift */; };
-		F4C7114928E8E1330010E33C /* ContactsNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114828E8E1330010E33C /* ContactsNetworkManager.swift */; };
+		F4C7114928E8E1330010E33C /* ContactsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114828E8E1330010E33C /* ContactsUtils.swift */; };
 		F4C7114B28E8E91B0010E33C /* SessionUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114A28E8E91B0010E33C /* SessionUtil.swift */; };
 		F4C7114D28E90BD30010E33C /* SettingsOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114C28E90BD30010E33C /* SettingsOptionTableViewCell.swift */; };
 		F4C7114F28E919060010E33C /* ContactListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114E28E919060010E33C /* ContactListTableViewCell.swift */; };
@@ -104,7 +104,7 @@
 		F4C7114228E8B53D0010E33C /* NCMsgCountLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMsgCountLabel.swift; sourceTree = "<group>"; };
 		F4C7114428E8CDE00010E33C /* NCLogoutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLogoutButton.swift; sourceTree = "<group>"; };
 		F4C7114628E8DFB80010E33C /* SettingsUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserTableViewCell.swift; sourceTree = "<group>"; };
-		F4C7114828E8E1330010E33C /* ContactsNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsNetworkManager.swift; sourceTree = "<group>"; };
+		F4C7114828E8E1330010E33C /* ContactsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsUtils.swift; sourceTree = "<group>"; };
 		F4C7114A28E8E91B0010E33C /* SessionUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionUtil.swift; sourceTree = "<group>"; };
 		F4C7114C28E90BD30010E33C /* SettingsOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOptionTableViewCell.swift; sourceTree = "<group>"; };
 		F4C7114E28E919060010E33C /* ContactListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListTableViewCell.swift; sourceTree = "<group>"; };
@@ -165,7 +165,6 @@
 				F43C642628D70B1700E62E43 /* PersistentManager.swift */,
 				F43C642A28D7F9B000E62E43 /* LoginNetworkManager.swift */,
 				F4C9A2B528E1DA5F007AE983 /* WebSocketManager.swift */,
-				F4C7114828E8E1330010E33C /* ContactsNetworkManager.swift */,
 				F4CC427028EF717B00A06DB5 /* ChatNetworkManager.swift */,
 			);
 			path = Managers;
@@ -174,6 +173,7 @@
 		F4292D7D28D13AAC0025F98F /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				F4C7114828E8E1330010E33C /* ContactsUtils.swift */,
 				F4292D7E28D13ACA0025F98F /* NCError.swift */,
 				F43C642C28D7FA3B00E62E43 /* NCNetwork.swift */,
 				F43C643E28DAB17E00E62E43 /* UserDetailUtil.swift */,
@@ -454,7 +454,7 @@
 				F43C642D28D7FA3B00E62E43 /* NCNetwork.swift in Sources */,
 				F40A968528F367A30059882A /* NCChatTextView.swift in Sources */,
 				F43C642528D6CC6100E62E43 /* NCLoadingVC.swift in Sources */,
-				F4C7114928E8E1330010E33C /* ContactsNetworkManager.swift in Sources */,
+				F4C7114928E8E1330010E33C /* ContactsUtils.swift in Sources */,
 				F4C7114328E8B53D0010E33C /* NCMsgCountLabel.swift in Sources */,
 				F4408D1828CEC009009DAD2F /* NCLoginButton.swift in Sources */,
 				F40A967F28F30E370059882A /* ChatViewTaleViewCell.swift in Sources */,

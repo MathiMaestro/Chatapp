@@ -15,6 +15,6 @@ struct UserData : Codable, Hashable {
     var imgUrl          : String
     var totalChats      : Int?
     var unreadChats     : Int?
-    var joinedTime      : Int64?
-    var lastOnline      : Int64
+    var joinedTime      : Double?
+    var lastOnline      : Double
 }

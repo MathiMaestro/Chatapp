@@ -16,9 +16,10 @@ enum MessageType {
 }
 
 enum NotificationObserverName {
-    static let newMessageKey    = "newMessageKey"
-    static let newChatKey       = "newChatKey"
-    static let messageTypingKey = "messageTypingKey"
+    static let newMessageKey    = Notification.Name("newMessageKey")
+    static let newChatKey       = Notification.Name("newChatKey")
+    static let messageTypingKey = Notification.Name("messageTypingKey")
+    static let activeStatus     = Notification.Name("messageTypingKey")
 }
 
 class IOSocketManager {
@@ -69,19 +70,26 @@ class IOSocketManager {
             let messageType = self.getType(for: mode)
             switch messageType {
             case .typing:
-                let notificationName = Notification.Name(NotificationObserverName.messageTypingKey)
-                NotificationCenter.default.post(name: notificationName, object: nil, userInfo: dataDict)
+                ChatUtils.shared.updateTyping(for: dataDict)
+                NotificationCenter.default.post(name: NotificationObserverName.messageTypingKey, object: nil, userInfo: dataDict)
             case .newMessage:
-                guard let newMessageDict = self.prepareNewMessageData(jsonDict: dataDict) else { return }
-                let notificationName = Notification.Name(NotificationObserverName.newMessageKey)
-                NotificationCenter.default.post(name: notificationName, object: nil, userInfo: newMessageDict)
+                guard let newMessageDict    = self.prepareNewMessageData(jsonDict: dataDict) else { return }
+                ChatUtils.shared.updateMessage(for: newMessageDict)
+                NotificationCenter.default.post(name: NotificationObserverName.newMessageKey, object: nil, userInfo: newMessageDict)
             case .newChat:
                 guard let chat = self.getChatData(jsonDict: dataDict) else { return }
                 ChatUtils.shared.createNewChat(chat: chat)
-                let notificationName = Notification.Name(NotificationObserverName.newChatKey)
-                NotificationCenter.default.post(name: notificationName, object: nil, userInfo: ["chat":chat])
+                ContactsUtils.shared.fetchFriendsList { result in
+                    switch result {
+                    case .success(_):
+                        NotificationCenter.default.post(name: NotificationObserverName.newChatKey, object: nil, userInfo: ["chat":chat])
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
             case .status:
-                print(jsonDict)
+                guard let activeStatus = self.getStatusData(jsonDict: dataDict) else { return }
+                NotificationCenter.default.post(name: NotificationObserverName.activeStatus, object: nil, userInfo: ["status":activeStatus])
             case .none:
                 print(jsonDict)
             }
@@ -111,7 +119,24 @@ class IOSocketManager {
         }
     }
     
+    private func getStatusData(jsonDict: [String:Any])  -> ActiveStatus? {
+        guard let data = NCNetworkUtils.getData(from: jsonDict) else { return nil }
+        do {
+            let chat = try NCNetworkUtils.decoder.decode(ActiveStatus.self, from: data)
+            return chat
+        } catch {
+            return nil
+        }
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+}
+
+
+struct ActiveStatus : Codable {
+    let status: String
+    let lastOnline: Double
+    let id: String
 }

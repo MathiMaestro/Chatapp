@@ -88,7 +88,7 @@ class ChatListTableViewCell: UITableViewCell {
     }
     
     func updateTyping(for chat: Chat) {
-        typingLabel.isHidden            = !(chat.isTyping ?? true)
+        typingLabel.isHidden            = !(chat.isTyping ?? false)
         lastMessageLabel.isHidden       = (chat.isTyping ?? false)
         unReadChatCountLabel.isHidden   = (chat.isTyping ?? false)
     }

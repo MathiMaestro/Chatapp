@@ -75,7 +75,9 @@ class ChatViewTaleViewCell : UITableViewCell {
         timeLabel.text                          = message.time?.convertToDate()?.convertToTimeString()
         messageLabelLeadingAnchor?.isActive     = message.isReceived()
         messageLabelTrailingAnchor?.isActive    = !message.isReceived()
-        containerView.backgroundColor           = message.isReceived() ? .systemBackground : .systemGray
+        containerView.backgroundColor           = message.isReceived() ? .white : .darkGray
+        messageLabel.textColor                  = message.isReceived() ? .black : .white
+        
     }
     
     required init?(coder: NSCoder) {

@@ -48,7 +48,7 @@ class ChatListVC: NCLoadingVC {
         tabBarController?.tabBar.isHidden                       = false
         navigationController?.navigationBar.prefersLargeTitles  = true
         if !isFirstTime {
-            updateChatList()
+            updateDatasForNewData()
         }
         isFirstTime = false
     }
@@ -91,19 +91,20 @@ extension ChatListVC {
             self.dismissLoadingView()
             switch result {
             case .success(let chatListData):
-                self.chatList           = chatListData.chats
                 self.isDataAvailable    = chatListData.hasMore
                 self.updateDatasForNewData()
             case .failure(let error):
-                self.presentNCAlertViewInMainThread(title: "Oops..", message: error.rawValue, buttonTitle: "Ok")
                 if error == .invalidToken {
-                    SessionUtil.goToLogin()
+                    SessionUtil.goToLogin(title: "Oops..", message: error.rawValue)
+                } else {
+                    self.presentNCAlertViewInMainThread(title: "Oops..", message: error.rawValue, buttonTitle: "Ok")
                 }
             }
         }
     }
     
     private func updateDatasForNewData() {
+        chatList = ChatUtils.shared.chatList
         if isSearchEnabled {
             searchChatList = chatList.filter({($0.getSender()?.userName ?? "").lowercased().contains(searchBarText.lowercased())})
             updateView(chatList: searchChatList)
@@ -123,10 +124,9 @@ extension ChatListVC {
         })
     }
     
-    private func updateChatList() {
+    @objc func updateChatList() {
         chatList        = ChatUtils.shared.chatList
         searchChatList  = isSearchEnabled ? chatList.filter({($0.getSender()?.userName ?? "").lowercased().contains(searchBarText.lowercased())}) : []
-        updateView(chatList: isSearchEnabled ? searchChatList : chatList)
     }
     
     private func updateView(chatList : [Chat]) {
@@ -173,12 +173,8 @@ extension ChatListVC : UITableViewDelegate {
 extension ChatListVC {
     
     private func configureNotificationObserver() {
-        let newMessageNotificationName  = Notification.Name(NotificationObserverName.newMessageKey)
-        let newChatNotificationName     = Notification.Name(NotificationObserverName.newChatKey)
-        let msgTypeingNotificationName  = Notification.Name(NotificationObserverName.messageTypingKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(newMessageArrived(notification:)), name: newMessageNotificationName, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(newChatCreated), name: newChatNotificationName, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(configureTyping(notification:)), name: msgTypeingNotificationName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(newMessageArrived), name: NotificationObserverName.newMessageKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(configureTyping(notification:)), name: NotificationObserverName.messageTypingKey, object: nil)
     }
     
     @objc func newMessageArrived(notification: NSNotification) {
@@ -187,45 +183,37 @@ extension ChatListVC {
         }
         if isSearchEnabled {
             updateDataForNewMessage(chatId: chatId, message: message, isSearch: true)
+        } else {
+            updateDataForNewMessage(chatId: chatId, message: message, isSearch: false)
         }
-        updateDataForNewMessage(chatId: chatId, message: message, isSearch: false)
-        updateDatasForNewData()
     }
     
     private func updateDataForNewMessage(chatId: String, message : Message, isSearch : Bool) {
-        var list = isSearch ? searchChatList : chatList
-        guard let chat      = list.filter({$0._id == chatId}).first, let index = list.firstIndex(of: chat) else { return }
-        chat.updateLastMessage(message: message)
+        let list = isSearch ? searchChatList : chatList
+        guard var chat      = list.filter({$0._id == chatId}).first, let index = list.firstIndex(of: chat) else {
+            updateDatasForNewData()
+            return
+        }
         let indexPath       = IndexPath(item: index, section: 0)
-        if let cell      = tableView.cellForRow(at: indexPath), tableView.visibleCells.contains(cell), let chatCell = cell as? ChatListTableViewCell {
+        if index == 0, let cell = tableView.cellForRow(at: indexPath), tableView.visibleCells.contains(cell), let chatCell = cell as? ChatListTableViewCell {
             chatCell.updateViewForNewMessage(for: chat)
+            updateChatList()
         } else {
-            list.remove(at: index)
-            list.insert(chat, at: 0)
-            
-            if isSearch {
-                searchChatList = list
-            } else {
-                chatList = list
-            }
+            updateDatasForNewData()
         }
     }
     
     
     @objc func configureTyping(notification: NSNotification) {
-        guard let userInfo = notification.userInfo,let chatId = userInfo["chat_id"] as? String, let isTyping = userInfo["is_typing"] as? Bool else {
+        guard let userInfo = notification.userInfo,let chatId = userInfo["chat_id"] as? String else {
             return
         }
+        updateChatList()
         let list        = isSearchEnabled ? searchChatList : chatList
-        guard let chat  = list.filter({$0._id == chatId}).first, chat.isTyping != isTyping, let index = list.firstIndex(of: chat) else { return }
+        guard let chat  = list.filter({$0._id == chatId}).first, let index = list.firstIndex(of: chat) else { return }
         let indexPath   = IndexPath(item: index, section: 0)
         guard let cell  = tableView.cellForRow(at: indexPath), tableView.visibleCells.contains(cell), let chatCell = cell as? ChatListTableViewCell else { return }
-        chat.isTyping   = isTyping
-        
         chatCell.updateTyping(for: chat)
     }
     
-    @objc func newChatCreated() {
-        updateChatList()
-    }
 }

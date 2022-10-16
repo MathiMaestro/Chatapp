@@ -81,7 +81,7 @@ class NCTextField: UITextField {
     }
 
     override open func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: padding)
+        return bounds.inset(by: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 30))
     }
     
     required init?(coder: NSCoder) {

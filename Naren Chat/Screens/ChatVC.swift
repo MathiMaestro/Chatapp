@@ -12,8 +12,9 @@ class ChatVC: NCLoadingVC {
     var chat : Chat
     var dataSource : UITableViewDiffableDataSource<String,Message>?
     var taxtFieldBottomAnchor: NSLayoutConstraint?
+    var navBarTitleView : NCNavbarProfileTitleView?
     
-    private var messageData     = MessagesOrderedData()
+    var messageData             = MessagesOrderedData()
     private let chatTextView    = NCChatTextView(frame: .zero)
     
     private let tableView : UITableView = {
@@ -80,14 +81,26 @@ extension ChatVC {
         navigationItem.largeTitleDisplayMode    = .never
         tabBarController?.tabBar.isHidden       = true
         navigationController?.navigationBar.backgroundColor = .systemBackground
+        setNavBarAppearance()
         preparenavigationTitleView()
+    }
+    
+    private func setNavBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .systemBackground
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.label]
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
     
     private func preparenavigationTitleView() {
         guard let sender = chat.getSender() else { return }
         
-        let navBarTitleView = NCNavbarProfileTitleView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
-        navBarTitleView.updateView(with: sender)
+        navBarTitleView = NCNavbarProfileTitleView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
+        navBarTitleView?.updateView(with: sender)
+        navBarTitleView?.updateStatus(type: .offline(time: chat.lastActiveTime.convertToDate()?.convertToString() ?? ""))
         navigationItem.titleView = navBarTitleView
     }
     
@@ -159,8 +172,17 @@ extension ChatVC {
     private func configureNotificationObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHandling(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHandling(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleActiveStatus(notification:)), name: NotificationObserverName.activeStatus, object: nil)
     }
 
+    @objc func handleActiveStatus(notification: Notification) {
+        guard let userInfo = notification.userInfo, let activeStatus = userInfo["status"] as? ActiveStatus, let sender = chat.getSender(), activeStatus.id == sender._id else { return }
+        if activeStatus.status == "online" {
+            navBarTitleView?.updateStatus(type: .online)
+        } else {
+            navBarTitleView?.updateStatus(type: .offline(time: activeStatus.lastOnline.convertToDate()?.convertToString() ?? ""))
+        }
+    }
     
     @objc func keyboardHandling(notification: Notification) {
         guard let userInfo = notification.userInfo, let frame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }

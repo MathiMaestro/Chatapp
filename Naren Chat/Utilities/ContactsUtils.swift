@@ -1,5 +1,5 @@
 //
-//  ContactsNetworkManager.swift
+//  ContactsUtils.swift
 //  Naren Chat
 //
 //  Created by Mathiyalagan S on 02/10/22.
@@ -7,11 +7,17 @@
 
 import Foundation
 
-class ContactsNetworkManager {
+class ContactsUtils {
     
-    static let shared = ContactsNetworkManager()
+    static let shared = ContactsUtils()
     
-    func getFriendsList(completed: @escaping (Result<[UserData],NCError>) -> Void) {
+    var friendList : [UserData] = []
+    
+//    func addContact(newContact: UserData) {
+//        friendList.append(newContact)
+//    }
+//
+    func fetchFriendsList(completed: @escaping (Result<Bool,NCError>) -> Void) {
         guard let url = URL(string: NCAPI.getAPI(for: .friendList)), let token = PersistenceManager.token else {
             completed(.failure(.invalidToken))
             return
@@ -26,8 +32,8 @@ class ContactsNetworkManager {
                         completed(.failure(.invalidResponse))
                         return
                     }
-                    let friendsList = try NCNetworkUtils.decoder.decode([UserData].self, from: friendsListData)
-                    completed(.success(friendsList))
+                    self.friendList = try NCNetworkUtils.decoder.decode([UserData].self, from: friendsListData)
+                    completed(.success(true))
                 } catch {
                     completed(.failure(.invalidResponse))
                 }

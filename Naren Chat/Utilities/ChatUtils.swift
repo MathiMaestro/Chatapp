@@ -11,10 +11,38 @@ class ChatUtils {
     
     static let shared = ChatUtils()
     
-    var chatList : [Chat] = []
+    var chatList : [Chat]       = []
+    var createdChatList: [Chat] = []
+    var allList: [Chat]         = []
     
     func createNewChat(chat: Chat) {
-        chatList.insert(chat, at: 0)
+        createdChatList.insert(chat, at: 0)
+    }
+    
+    func updateMessage(for messageDict: [String:Any]) {
+        guard let chatId = messageDict["chatId"] as? String, let message = messageDict["message"] as? Message else { return }
+        
+        if var newChat = createdChatList.filter({$0._id == chatId}).first, let index = createdChatList.firstIndex(of: newChat) {
+            createdChatList.remove(at: index)
+            newChat.updateLastMessage(message: message)
+            chatList.insert(newChat, at: 0)
+        } else if var chat = chatList.filter({$0._id == chatId}).first, let index = chatList.firstIndex(of: chat) {
+            chat.updateLastMessage(message: message)
+            chatList.remove(at: index)
+            chatList.insert(chat, at: 0)
+        }
+    }
+    
+    func getChat(for contact: UserData) -> Chat? {
+        guard let chat = allList.filter({$0.getSender()?._id == contact._id}).first else { return nil }
+        return chat
+    }
+    
+    func updateTyping(for typingDict: [String:Any]) {
+        guard let chatId = typingDict["chat_id"] as? String, let isTyping = typingDict["is_typing"] as? Bool, let chat = chatList.filter({$0._id == chatId}).first,let index = chatList.firstIndex(of: chat) else {
+            return
+        }
+        chatList[index].isTyping = isTyping
     }
     
     func getChatList(listCount : Int, completed: @escaping (Result<ChatListData,NCError>) -> Void) {
@@ -29,13 +57,13 @@ class ChatUtils {
             case .success(let data):
                 do {
                     let jsonData = try JSONSerialization.jsonObject(with: data)
-                    guard let jsonDict = jsonData as? [String: Any], let dictData = jsonDict["data"] as? [String: Any], let chatListData = NCNetworkUtils.getData(from: dictData) else {
+                    guard let jsonDict = jsonData as? [String: Any], let dictData = jsonDict["data"] as? [String: Any], let chatListDictData = NCNetworkUtils.getData(from: dictData) else {
                         completed(.failure(.invalidResponse))
                         return
                     }
-                    let chatList = try NCNetworkUtils.decoder.decode(ChatListData.self, from: chatListData)
-                    self.chatList = chatList.chats
-                    completed(.success(chatList))
+                    let chatListData    = try NCNetworkUtils.decoder.decode(ChatListData.self, from: chatListDictData)
+                    chatListData.chats  = getValidChatList(chatList: chatListData.chats)
+                    completed(.success(chatListData))
                 } catch {
                     completed(.failure(.invalidResponse))
                 }
@@ -43,5 +71,24 @@ class ChatUtils {
                 completed(.failure(error))
             }
         }
+    }
+    
+    private func getValidChatList(chatList: [Chat]) -> [Chat] {
+        
+        var createdChatList: [Chat] = []
+        var validChatList: [Chat]   = []
+        
+        validChatList = chatList.filter { chat in
+            if chat.lastMessage._id != nil {
+                return true
+            } else {
+                createdChatList.append(chat)
+                return false
+            }
+        }
+        self.allList            = chatList
+        self.createdChatList    = createdChatList
+        self.chatList           = validChatList
+        return validChatList
     }
 }

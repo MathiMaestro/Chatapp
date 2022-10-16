@@ -22,11 +22,10 @@ class ContactsVC: NCLoadingVC {
         return tableView
     }()
     
-    private var contactList : [UserData]    = []
+//    private var contactList : [UserData]    = []
     private var searchResult : [UserData]   = []
     private var isSearchEnabled : Bool      = false
     private var searchText : String         = ""
-    private var isFirstTime : Bool          = true
     
     private var dataSource : UITableViewDiffableDataSource<DiffableDSSectionType,UserData>? = nil
     
@@ -36,8 +35,6 @@ class ContactsVC: NCLoadingVC {
         configureSearchController()
         configureUI()
         configureDataSource()
-        showLoadingView()
-        getFriendsList()
         configureNotificationObserver()
     }
     
@@ -45,46 +42,14 @@ class ContactsVC: NCLoadingVC {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles  = true
         tabBarController?.tabBar.isHidden                       = false
-        if !isFirstTime {
-            getFriendsList()
-        } else {
-            isFirstTime = false
-        }
-    }
-    
-    @objc func getFriendsList() {
-        ContactsNetworkManager.shared.getFriendsList { [unowned self] result in
-            self.dismissLoadingView()
-            switch result {
-            case .success(let contactList):
-                self.contactList = contactList
-                if self.isSearchEnabled {
-                    self.searchResult = contactList.filter({$0.userName.lowercased().contains(self.searchText.lowercased())})
-                    self.updateView(on: self.searchResult)
-                } else {
-                    self.updateView(on: contactList)
-                }
-            case .failure(let error):
-                self.presentNCAlertViewInMainThread(title: "Oops..", message: error.rawValue, buttonTitle: "Ok")
-                if error == .invalidToken {
-                    SessionUtil.goToLogin()
-                }
-            }
-        }
     }
     
     private func configureNotificationObserver() {
-        let newChatNotificationName     = Notification.Name(NotificationObserverName.newChatKey)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateContact(notification:)), name: newChatNotificationName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateContact(notification:)), name: NotificationObserverName.newChatKey, object: nil)
     }
     
     @objc func updateContact(notification: NSNotification) {
-        guard let userInfo = notification.userInfo,
-              let chat = userInfo["chat"] as? Chat,
-              let sender = chat.getSender(),
-              contactList.contains(where: {$0.userName != sender.userName}) else
-        { return }
-        getFriendsList()
+        updateView(on: ContactsUtils.shared.friendList)
     }
     
     deinit {
@@ -109,7 +74,7 @@ class ContactsVC: NCLoadingVC {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactListTableViewCell.reusableId, for: indexPath) as? ContactListTableViewCell else {
                 return tableView.dequeueReusableCell(withIdentifier: ContactListTableViewCell.reusableId, for: indexPath)
             }
-            let userData = self.isSearchEnabled ? self.searchResult[indexPath.item] : self.contactList[indexPath.item]
+            let userData = self.isSearchEnabled ? self.searchResult[indexPath.item] : ContactsUtils.shared.friendList[indexPath.item]
             cell.updateView(with: userData)
             return cell
         })
@@ -127,6 +92,24 @@ class ContactsVC: NCLoadingVC {
         view.addSubview(tableView)
         
         tableView.frame     = view.bounds
+        tableView.delegate  = self
+        updateView(on: ContactsUtils.shared.friendList)
+    }
+}
+
+extension ContactsVC : UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let contact = isSearchEnabled ? searchResult[indexPath.item] : ContactsUtils.shared.friendList[indexPath.item]
+        guard let chat = ChatUtils.shared.getChat(for: contact) else { return }
+        showChatView(chat: chat)
+    }
+    
+    private func showChatView(chat : Chat) {
+        DispatchQueue.main.async {
+            let chatVC = ChatVC(chat: chat)
+            self.navigationController?.pushViewController(chatVC, animated: true)
+        }
     }
 }
 
@@ -135,12 +118,12 @@ extension ContactsVC : UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
             isSearchEnabled = false
-            updateView(on: contactList)
+            updateView(on: ContactsUtils.shared.friendList)
             return
         }
         isSearchEnabled = true
         self.searchText = searchText
-        searchResult = contactList.filter({$0.userName.lowercased().contains(searchText.lowercased())})
+        searchResult = ContactsUtils.shared.friendList.filter({$0.userName.lowercased().contains(searchText.lowercased())})
         updateView(on: searchResult)
     }
 }

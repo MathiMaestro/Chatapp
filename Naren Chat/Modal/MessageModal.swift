@@ -40,6 +40,16 @@ class Message : Codable, Hashable {
     let isRead      : Bool?
     let type        : String?
     
+    init(_id: String? = nil, senderId: String? = nil, text: String? = nil, time: Double? = nil, isDelivered: Bool? = nil, isRead: Bool? = nil, type: String? = nil) {
+        self._id = _id
+        self.senderId = senderId
+        self.text = text
+        self.time = time
+        self.isDelivered = isDelivered
+        self.isRead = isRead
+        self.type = type
+    }
+    
     static func == (lhs: Message, rhs: Message) -> Bool {
         lhs._id == rhs._id && lhs.senderId == rhs.senderId && lhs.text == rhs.text && lhs.time == rhs.time && lhs.isDelivered == rhs.isDelivered && lhs.isRead == rhs.isRead && lhs.type == rhs.type
     }

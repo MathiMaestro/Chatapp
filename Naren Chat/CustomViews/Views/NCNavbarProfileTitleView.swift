@@ -12,6 +12,7 @@ class NCNavbarProfileTitleView : UIView {
     
     private let titleLabel          = NCTitleLabel(textColor: .label, textAlignment: .left, font: .preferredFont(forTextStyle: .headline))
     private let profileImageView    = NCProfileImageView(frame: .zero)
+    private let statusLabel         = NCBodyLabel(textColor: .systemBlue, textAlignment: .left,font: .preferredFont(forTextStyle: .caption1),title: "typing...")
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,7 +24,7 @@ class NCNavbarProfileTitleView : UIView {
     }
     
     private func configureUI() {
-        self.addSubViews(profileImageView,titleLabel)
+        self.addSubViews(profileImageView,titleLabel,statusLabel)
         
         NSLayoutConstraint.activate([
             profileImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
@@ -33,7 +34,12 @@ class NCNavbarProfileTitleView : UIView {
             
             titleLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            titleLabel.topAnchor.constraint(equalTo: self.topAnchor,constant: 6),
+            
+            statusLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
+            statusLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            statusLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,constant: 3)
+            
         ])
     }
     
@@ -42,8 +48,29 @@ class NCNavbarProfileTitleView : UIView {
         titleLabel.text = sender.userName
     }
     
+    func updateStatus(type: ChatStatus) {
+        switch type {
+        case .typing:
+            statusLabel.text = "typing..."
+            statusLabel.textColor = .systemGray2
+        case .online:
+            statusLabel.text = "online"
+            statusLabel.textColor = .systemGreen
+        case .offline(var time):
+            let dateTime = time.split(separator: ",")
+            statusLabel.text = "last scene \(dateTime.first ?? "") at \(dateTime.last ?? "")"
+            statusLabel.textColor = .systemGray2
+        }
+    }
+    
     override var intrinsicContentSize: CGSize {
         return frame.size
     }
     
+}
+
+enum ChatStatus {
+    case typing
+    case online
+    case offline(time: String)
 }

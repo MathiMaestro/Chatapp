@@ -17,13 +17,14 @@ class NCChatTextView : UIView {
     
     private let sendButton : UIButton =  {
         let button = UIButton()
-        button.setTitle("Send", for: .normal)
-        button.setTitleColor(.link, for: .normal)
+        button.setImage(UIImage(systemName: "paperplane.circle.fill"), for: .normal)
+        button.contentHorizontalAlignment = .fill
+        button.contentVerticalAlignment = .fill
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    private let chatTextField = NCTextField(placeHolderName: "Type your message..", backgroundColor: .systemGray5)
+    private let chatTextField = NCTextField(placeHolderName: "Type your message..", backgroundColor: .systemBackground)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,8 +39,9 @@ class NCChatTextView : UIView {
         
         NSLayoutConstraint.activate([
             sendButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            sendButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            sendButton.widthAnchor.constraint(equalToConstant: 42),
+            sendButton.topAnchor.constraint(equalTo: self.topAnchor,constant: 9),
+            sendButton.widthAnchor.constraint(equalToConstant: 34),
+            sendButton.heightAnchor.constraint(equalToConstant: 30),
             
             chatTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 16),
             chatTextField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -5),

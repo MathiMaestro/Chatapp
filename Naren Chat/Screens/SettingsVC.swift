@@ -112,9 +112,8 @@ extension SettingsVC : UITableViewDelegate, UITableViewDataSource {
             switch result {
             case .success(let success):
                 if success {
-                    self.presentNCAlertViewInMainThread(title: "We miss you", message: "Your account deleted successfully", buttonTitle: "Ok")
                     UserDetailUtil.shared.removeUserData()
-                    SessionUtil.goToLogin()
+                    SessionUtil.goToLogin(title: "We miss you", message: "Your account deleted successfully")
                 } else {
                     self.presentNCAlertViewInMainThread(title: "Oops..", message: "Sorry. Unable to delete your account", buttonTitle: "Ok")
                 }
@@ -128,7 +127,6 @@ extension SettingsVC : UITableViewDelegate, UITableViewDataSource {
 extension SettingsVC : SettingsUserTableViewCellToView {
     
     func signoutTapped() {
-        showLoadingView()
         UserDetailUtil.shared.removeUserData()
         SessionUtil.goToLogin()
     }

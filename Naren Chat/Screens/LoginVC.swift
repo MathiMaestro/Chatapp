@@ -13,6 +13,17 @@ class LoginVC: NCLoadingVC {
     private let signupView  = LoginView(isSignUp: true)
     var isLoginEnabled      = true
     
+    init(title : String? = nil, message: String? = nil) {
+        super.init(nibName: nil, bundle: nil)
+        if title != nil || message != nil {
+            self.presentNCAlertViewInMainThread(title: title ?? "Oops..", message: message ?? "Something went wrong", buttonTitle: "Ok")
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
