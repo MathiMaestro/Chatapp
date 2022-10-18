@@ -12,14 +12,16 @@ enum MessageType {
     case newMessage
     case status
     case newChat
+    case sentMessageRead
     case none
 }
 
 enum NotificationObserverName {
-    static let newMessageKey    = Notification.Name("newMessageKey")
-    static let newChatKey       = Notification.Name("newChatKey")
-    static let messageTypingKey = Notification.Name("messageTypingKey")
-    static let activeStatus     = Notification.Name("messageTypingKey")
+    static let newMessageKey            = Notification.Name("newMessageKey")
+    static let newChatKey               = Notification.Name("newChatKey")
+    static let messageTypingKey         = Notification.Name("messageTypingKey")
+    static let activeStatusKey          = Notification.Name("activeStatusKey")
+    static let sentMessageReadKey       = Notification.Name("messageReadKey")
 }
 
 class IOSocketManager {
@@ -53,6 +55,8 @@ class IOSocketManager {
             return .status
         case "newchat":
             return .newChat
+        case "chatmeta","msgmeta":
+            return .sentMessageRead
         default:
             return .none
         }
@@ -88,12 +92,24 @@ class IOSocketManager {
                     }
                 }
             case .status:
-                guard let activeStatus = self.getStatusData(jsonDict: dataDict) else { return }
-                NotificationCenter.default.post(name: NotificationObserverName.activeStatus, object: nil, userInfo: ["status":activeStatus])
+                guard let userStatusDetail = self.getStatusData(jsonDict: dataDict) else { return }
+                ContactsUtils.shared.updateContactStatus(with: userStatusDetail)
+                NotificationCenter.default.post(name: NotificationObserverName.activeStatusKey, object: nil)
+            case .sentMessageRead:
+                if let chatId = dataDict["chat_id"] as? String, let isRead = dataDict["read"] as? Bool, isRead {
+                    self.updateSentMessageRead(chatId: chatId)
+                } else if let chatId = dataDict["chat_id"] as? String, let isRead = dataDict["is_read"] as? Bool, isRead{
+                    self.updateSentMessageRead(chatId: chatId)
+                }
             case .none:
                 print(jsonDict)
             }
         })
+    }
+    
+    private func updateSentMessageRead(chatId: String) {
+        ChatUtils.shared.updatelastMessageAsRead(for: chatId)
+        NotificationCenter.default.post(name: NotificationObserverName.sentMessageReadKey, object: nil, userInfo: ["chat_id":chatId])
     }
     
     private func prepareNewMessageData(jsonDict: [String:Any]) -> [String:Any]? {
@@ -119,11 +135,11 @@ class IOSocketManager {
         }
     }
     
-    private func getStatusData(jsonDict: [String:Any])  -> ActiveStatus? {
+    private func getStatusData(jsonDict: [String:Any])  -> UserStatusDetail? {
         guard let data = NCNetworkUtils.getData(from: jsonDict) else { return nil }
         do {
-            let chat = try NCNetworkUtils.decoder.decode(ActiveStatus.self, from: data)
-            return chat
+            let userStatusDetail = try NCNetworkUtils.decoder.decode(UserStatusDetail.self, from: data)
+            return userStatusDetail
         } catch {
             return nil
         }
@@ -135,7 +151,7 @@ class IOSocketManager {
 }
 
 
-struct ActiveStatus : Codable {
+struct UserStatusDetail : Codable {
     let status: String
     let lastOnline: Double
     let id: String

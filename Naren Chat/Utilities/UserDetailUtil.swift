@@ -5,16 +5,20 @@
 //  Created by Mathiyalagan S on 21/09/22.
 //
 
-import Foundation
+import UIKit
 
 class UserDetailUtil {
     
     static let shared           = UserDetailUtil()
     var userData : UserData?    = nil
+    let cache = NSCache<NSString,UIImage>()
     
     func removeUserData() {
         PersistenceManager.token    = nil
-        userData                    = nil
+        reset()
+        ChatUtils.shared.reset()
+        ContactsUtils.shared.reset()
+        IOSocketManager.shared.stop()
     }
     
     func isUserLoggedinAlready() -> Bool {
@@ -32,6 +36,11 @@ class UserDetailUtil {
                 completed(error)
             }
         }
+    }
+    
+    func reset() {
+        cache.removeAllObjects()
+        userData = nil
     }
     
 }

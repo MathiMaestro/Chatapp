@@ -32,7 +32,7 @@ class NetworkManager {
             }
             
             switch response.statusCode {
-            case 200:
+            case 200, 204:
                 guard let data = data else {
                     completed(.failure(.invalidData))
                     return

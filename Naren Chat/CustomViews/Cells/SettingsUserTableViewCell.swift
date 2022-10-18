@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol SettingsUserTableViewCellToView {
+protocol SettingsUserTableViewCellToView : AnyObject {
     func signoutTapped()
 }
 
 class SettingsUserTableViewCell : UITableViewCell {
     
     static let reusableId = "SettingsUserTableViewCell"
-    var delegate : SettingsUserTableViewCellToView?
+    weak var delegate : SettingsUserTableViewCellToView?
 
     private let profileImageView    = NCProfileImageView(frame: .zero)
     private let usernameLabel       = NCTitleLabel(textColor: .label, textAlignment: .left, font: .preferredFont(forTextStyle: .headline))
@@ -72,6 +72,10 @@ class SettingsUserTableViewCell : UITableViewCell {
         usernameLabel.text = user.userName
         userMailLabel.text = user.emailId
         profileImageView.downloadImage(for: user.imgUrl)
+    }
+    
+    deinit {
+        print("SettingsUserTableViewCell deinitialized")
     }
     
     required init?(coder: NSCoder) {

@@ -34,7 +34,7 @@ class NCNavbarProfileTitleView : UIView {
             
             titleLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            titleLabel.topAnchor.constraint(equalTo: self.topAnchor,constant: 6),
+            titleLabel.topAnchor.constraint(equalTo: self.topAnchor,constant: 5),
             
             statusLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
             statusLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
@@ -50,16 +50,22 @@ class NCNavbarProfileTitleView : UIView {
     
     func updateStatus(type: ChatStatus) {
         switch type {
-        case .typing:
-            statusLabel.text = "typing..."
-            statusLabel.textColor = .systemGray2
+        case .typing(let isTyping, let status):
+            guard isTyping else {
+                updateStatus(type: status)
+                return
+            }
+            statusLabel.text        = "typing..."
+            statusLabel.textColor   = .systemGray2
         case .online:
-            statusLabel.text = "online"
-            statusLabel.textColor = .systemGreen
-        case .offline(var time):
-            let dateTime = time.split(separator: ",")
-            statusLabel.text = "last scene \(dateTime.first ?? "") at \(dateTime.last ?? "")"
-            statusLabel.textColor = .systemGray2
+            statusLabel.text        = "online"
+            statusLabel.textColor   = .systemGreen
+        case .offline(let time):
+            let dateTime            = time.split(separator: ",")
+            statusLabel.text        = "last scene \(dateTime.first ?? "") at \(dateTime.last ?? "")"
+            statusLabel.textColor   = .systemGray2
+        case .none:
+            break
         }
     }
     
@@ -69,8 +75,9 @@ class NCNavbarProfileTitleView : UIView {
     
 }
 
-enum ChatStatus {
-    case typing
+indirect enum ChatStatus {
+    case typing(isTyping: Bool, status: ChatStatus)
     case online
     case offline(time: String)
+    case none
 }

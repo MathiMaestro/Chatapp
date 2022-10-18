@@ -19,9 +19,22 @@ class ChatUtils {
         createdChatList.insert(chat, at: 0)
     }
     
+    func updatelastMessageAsRead(for chatId: String) {
+        guard let chat = chatList.filter({$0._id == chatId}).first,let index = chatList.firstIndex(of: chat) else {
+            return
+        }
+        chatList[index].lastMessage.isRead  = true
+        chatList[index].unreadCount         = 0
+    }
+    
     func updateMessage(for messageDict: [String:Any]) {
         guard let chatId = messageDict["chatId"] as? String, let message = messageDict["message"] as? Message else { return }
         
+        updateNewMessage(chatId: chatId, message: message)
+        MessageUtils.shared.updateMessagesFor(chatId: chatId, message: message)
+    }
+    
+    func updateNewMessage(chatId: String, message: Message) {
         if var newChat = createdChatList.filter({$0._id == chatId}).first, let index = createdChatList.firstIndex(of: newChat) {
             createdChatList.remove(at: index)
             newChat.updateLastMessage(message: message)
@@ -90,5 +103,11 @@ class ChatUtils {
         self.createdChatList    = createdChatList
         self.chatList           = validChatList
         return validChatList
+    }
+    
+    func reset() {
+        chatList        = []
+        allList         = []
+        createdChatList = []
     }
 }

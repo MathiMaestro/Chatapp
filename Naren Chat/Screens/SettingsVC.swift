@@ -50,6 +50,10 @@ class SettingsVC: NCLoadingVC {
         
         tableView.reloadData()
     }
+    
+    deinit {
+        print("SettingsVC deinitialized")
+    }
 
 }
 

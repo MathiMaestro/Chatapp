@@ -22,6 +22,7 @@ class ContactListTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
         configureUI()
     }
     
@@ -49,6 +50,10 @@ class ContactListTableViewCell: UITableViewCell {
     func updateView(with userInfo: UserData) {
         userNameLabel.text = userInfo.userName
         profileImageView.downloadImage(for: userInfo.imgUrl)
+    }
+    
+    deinit {
+        print("ContactListTableViewCell deinitalized")
     }
     
     required init?(coder: NSCoder) {

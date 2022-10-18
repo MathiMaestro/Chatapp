@@ -23,12 +23,7 @@ class NCTableSectionLabel: UILabel {
         lineBreakMode               = .byTruncatingTail
         textColor                   = .systemBackground
         textAlignment               = .center
-        backgroundColor             = .label
-    }
-    
-    private func set(textColor: UIColor, textAlignment: NSTextAlignment) {
-        self.textColor      = textColor
-        self.textAlignment  = textAlignment
+        backgroundColor             = .label.withAlphaComponent(0.2)
     }
     
     func setText(with text: String) {

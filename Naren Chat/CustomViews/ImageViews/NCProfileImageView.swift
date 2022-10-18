@@ -9,8 +9,6 @@ import UIKit
 
 class NCProfileImageView: UIImageView {
     
-    private let cache = NSCache<NSString,UIImage>()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureProperties()
@@ -29,7 +27,7 @@ class NCProfileImageView: UIImageView {
     
     func downloadImage(for urlString: String) {
         let cacheKey = NSString(string: urlString)
-        if let profileImage = cache.object(forKey: cacheKey) {
+        if let profileImage = UserDetailUtil.shared.cache.object(forKey: cacheKey) {
             self.image = profileImage
         }
         
@@ -39,7 +37,7 @@ class NCProfileImageView: UIImageView {
             switch result {
             case .success(let data):
                 if let profileImage = UIImage(data: data) {
-                    self.cache.setObject(profileImage, forKey: cacheKey)
+                    UserDetailUtil.shared.cache.setObject(profileImage, forKey: cacheKey)
                     DispatchQueue.main.async { self.image = profileImage }
                 }
             case .failure(_):

@@ -45,10 +45,10 @@ class ChatViewTaleViewCell : UITableViewCell {
     private func configureUI() {
         contentView.addSubViews(containerView,messageLabel,timeLabel)
         
+        messageLabel.preferredMaxLayoutWidth = contentView.frame.width * 0.85
         NSLayoutConstraint.activate([
             messageLabel.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 15),
-            messageLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.75),
-            messageLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 120),
+            messageLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 80),
             messageLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant: -25),
             
             timeLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 3),
@@ -75,8 +75,9 @@ class ChatViewTaleViewCell : UITableViewCell {
         timeLabel.text                          = message.time?.convertToDate()?.convertToTimeString()
         messageLabelLeadingAnchor?.isActive     = message.isReceived()
         messageLabelTrailingAnchor?.isActive    = !message.isReceived()
-        containerView.backgroundColor           = message.isReceived() ? .white : .darkGray
+        containerView.backgroundColor           = message.isReceived() ? UIColor(red: 207/255, green: 207/255, blue: 207/255, alpha: 1) : UIColor(red: 45/255, green: 108/255, blue: 233/255, alpha: 1)
         messageLabel.textColor                  = message.isReceived() ? .black : .white
+        timeLabel.textColor                     = message.isReceived() ? .black.withAlphaComponent(0.6) : UIColor.init(white: 0.9, alpha: 1)
         
     }
     

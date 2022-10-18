@@ -9,13 +9,13 @@ import UIKit
 
 class ChatVC: NCLoadingVC {
     
-    var chat : Chat
-    var dataSource : UITableViewDiffableDataSource<String,Message>?
-    var taxtFieldBottomAnchor: NSLayoutConstraint?
-    var navBarTitleView : NCNavbarProfileTitleView?
+    private var chat : Chat
+    private var dataSource : UITableViewDiffableDataSource<String,Message>?
+    private var taxtFieldBottomAnchor: NSLayoutConstraint?
+    private var navBarTitleView : NCNavbarProfileTitleView?
     
-    var messageData             = MessagesOrderedData()
-    private let chatTextView    = NCChatTextView(frame: .zero)
+    private let chatTextView                = NCChatTextView(frame: .zero)
+    private var currentStatus: ChatStatus   = .none
     
     private let tableView : UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -23,6 +23,7 @@ class ChatVC: NCLoadingVC {
         tableView.register(ChatViewTaleViewCell.self, forCellReuseIdentifier: ChatViewTaleViewCell.reusableId)
         tableView.showsVerticalScrollIndicator  = false
         tableView.separatorStyle                = .none
+        tableView.contentInset                  = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
         
         return tableView
     }()
@@ -39,6 +40,11 @@ class ChatVC: NCLoadingVC {
         configureNotificationObserver()
         showLoadingView()
         getChatData()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        MessageUtils.shared.reset()
     }
     
     deinit {
@@ -100,15 +106,14 @@ extension ChatVC {
         
         navBarTitleView = NCNavbarProfileTitleView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
         navBarTitleView?.updateView(with: sender)
-        navBarTitleView?.updateStatus(type: .offline(time: chat.lastActiveTime.convertToDate()?.convertToString() ?? ""))
+        handleActiveStatus()
         navigationItem.titleView = navBarTitleView
     }
     
     private func getChatData() {
-        ChatNetworkManager.shared.getMessages(chatId: chat._id, limit: 100) { [unowned self] result in
+        MessageUtils.shared.getMessages(chatId: chat._id, limit: 100) { [unowned self] result in
             switch result {
-            case .success(let messageData):
-                self.messageData = messageData
+            case .success(_):
                 self.dismissLoadingView()
                 self.updateView()
             case .failure(let error):
@@ -121,7 +126,7 @@ extension ChatVC {
 extension ChatVC : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return getSectionHeaderView(sectionName: messageData.sectionOrder[section])
+        return getSectionHeaderView(sectionName: MessageUtils.shared.messageData.sectionOrder[section])
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -149,6 +154,7 @@ extension ChatVC : UITableViewDelegate {
     }
     
     private func updateView() {
+        let messageData = MessageUtils.shared.messageData
         var snapShot = NSDiffableDataSourceSnapshot<String,Message>()
         snapShot.appendSections(messageData.sectionOrder)
         for section in messageData.sectionOrder {
@@ -162,8 +168,9 @@ extension ChatVC : UITableViewDelegate {
     }
     
     private func scrollToLast() {
-        guard let lastSectionDate = self.messageData.sectionOrder.last,let lastSection = self.messageData.sectionData[lastSectionDate], lastSection.count > 0, self.messageData.sectionOrder.count > 0 else { return }
-        self.tableView.scrollToRow(at: IndexPath(row: (lastSection.count - 1), section: (self.messageData.sectionOrder.count - 1)), at: .bottom, animated: false)
+        let messageData = MessageUtils.shared.messageData
+        guard let lastSectionDate = messageData.sectionOrder.last,let lastSection = messageData.sectionData[lastSectionDate], lastSection.count > 0, messageData.sectionOrder.count > 0 else { return }
+        self.tableView.scrollToRow(at: IndexPath(row: (lastSection.count - 1), section: (messageData.sectionOrder.count - 1)), at: .bottom, animated: false)
     }
 }
 
@@ -172,16 +179,27 @@ extension ChatVC {
     private func configureNotificationObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHandling(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHandling(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleActiveStatus(notification:)), name: NotificationObserverName.activeStatus, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleActiveStatus), name: NotificationObserverName.activeStatusKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTypingStatus(notification:)), name: NotificationObserverName.messageTypingKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNewMessage(notification:)), name: NotificationObserverName.newMessageKey, object: nil)
     }
 
-    @objc func handleActiveStatus(notification: Notification) {
-        guard let userInfo = notification.userInfo, let activeStatus = userInfo["status"] as? ActiveStatus, let sender = chat.getSender(), activeStatus.id == sender._id else { return }
-        if activeStatus.status == "online" {
+    @objc func handleActiveStatus() {
+        guard let contact = ContactsUtils.shared.getSenderContact(for: chat)  else { return }
+
+        if contact.isOnline ?? false {
             navBarTitleView?.updateStatus(type: .online)
+            currentStatus = .online
         } else {
-            navBarTitleView?.updateStatus(type: .offline(time: activeStatus.lastOnline.convertToDate()?.convertToString() ?? ""))
+            let lastActiveTime = contact.lastOnline.convertToDate()?.convertToString() ?? ""
+            navBarTitleView?.updateStatus(type: .offline(time: lastActiveTime))
+            currentStatus = .offline(time: lastActiveTime)
         }
+    }
+    
+    @objc func handleTypingStatus(notification: Notification) {
+        guard let userInfo = notification.userInfo,let chatId = userInfo["chat_id"] as? String, let isTyping = userInfo["is_typing"] as? Bool, chatId == chat._id else { return }
+        navBarTitleView?.updateStatus(type: .typing(isTyping: isTyping, status: currentStatus))
     }
     
     @objc func keyboardHandling(notification: Notification) {
@@ -193,6 +211,12 @@ extension ChatVC {
             self.view.layoutIfNeeded()
             self.scrollToLast()
         }
+    }
+    
+    @objc func handleNewMessage(notification: Notification) {
+        guard let userInfo = notification.userInfo,let chatId = userInfo["chatId"] as? String, chatId == chat._id else { return }
+        updateView()
+        navBarTitleView?.updateStatus(type: .typing(isTyping: false, status: currentStatus))
     }
 }
 

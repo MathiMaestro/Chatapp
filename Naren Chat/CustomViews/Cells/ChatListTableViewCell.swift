@@ -17,6 +17,7 @@ class ChatListTableViewCell: UITableViewCell {
     private let typingLabel             = NCBodyLabel(textColor: .systemBlue, textAlignment: .left,font: .preferredFont(forTextStyle: .subheadline),title: "typing...")
     private let timeLabel               = NCBodyLabel(textColor: .secondaryLabel, textAlignment: .right,font: .preferredFont(forTextStyle: .subheadline))
     private let unReadChatCountLabel    = NCMsgCountLabel(textColor: .white, textAlignment: .center)
+    private let sentImageView           = NCMessageSentImageView(frame: .zero)
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -43,7 +44,7 @@ class ChatListTableViewCell: UITableViewCell {
     }
     
     private func configureUI() {
-        contentView.addSubViews(profileImageView,userNameLabel,lastMessageLabel,timeLabel,unReadChatCountLabel,typingLabel)
+        contentView.addSubViews(profileImageView,userNameLabel,lastMessageLabel,timeLabel,unReadChatCountLabel,typingLabel,sentImageView)
         
         let padding : CGFloat = 10
         
@@ -59,6 +60,11 @@ class ChatListTableViewCell: UITableViewCell {
             
             unReadChatCountLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor,constant: 10),
             unReadChatCountLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -padding),
+            
+            sentImageView.topAnchor.constraint(equalTo: timeLabel.bottomAnchor,constant: 10),
+            sentImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -padding),
+            sentImageView.widthAnchor.constraint(equalToConstant: 20),
+            sentImageView.heightAnchor.constraint(equalToConstant: 20),
             
             userNameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
             userNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
@@ -76,6 +82,7 @@ class ChatListTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius     = 22
         profileImageView.layer.masksToBounds    = true
         typingLabel.isHidden                    = true
+        sentImageView.isHidden                  = true
     }
     
     func updateView(with chat: Chat) {
@@ -84,6 +91,8 @@ class ChatListTableViewCell: UITableViewCell {
         unReadChatCountLabel.text   = chat.unreadCount > 0 ? "\(chat.unreadCount)" : nil
         userNameLabel.text          = sender.userName
         lastMessageLabel.text       = chat.lastMessage.text
+        sentImageView.updateImage(IsRead: chat.lastMessage.isRead ?? false)
+        sentImageView.isHidden      = chat.lastMessage.isReceived() ? true : false
         profileImageView.downloadImage(for: sender.imgUrl)
     }
     
@@ -91,13 +100,29 @@ class ChatListTableViewCell: UITableViewCell {
         typingLabel.isHidden            = !(chat.isTyping ?? false)
         lastMessageLabel.isHidden       = (chat.isTyping ?? false)
         unReadChatCountLabel.isHidden   = (chat.isTyping ?? false)
+        sentImageView.isHidden          = (chat.isTyping ?? false) ? true : (chat.lastMessage.isReceived() ? true : false)
     }
     
     func updateViewForNewMessage(for chat: Chat) {
         timeLabel.text              = chat.lastMessage.time?.convertToDate()?.convertToString()
         unReadChatCountLabel.text   = chat.unreadCount > 0 ? "\(chat.unreadCount)" : nil
         lastMessageLabel.text       = chat.lastMessage.text
+        sentImageView.isHidden      = chat.lastMessage.isReceived() ? true : false
+        sentImageView.updateImage(IsRead: chat.lastMessage.isRead ?? false)
         updateTyping(for: chat)
+    }
+    
+    func updateSentMessageRead(for chat: Chat) {
+        sentImageView.isHidden      = chat.lastMessage.isReceived() ? true : false
+        sentImageView.updateImage(IsRead: chat.lastMessage.isRead ?? false)
+    }
+    
+    func updateRecievedMessageRead(for chat: Chat) {
+        unReadChatCountLabel.text   = chat.unreadCount > 0 ? "\(chat.unreadCount)" : nil
+    }
+    
+    deinit {
+        print("ChatListTableViewCell deinitialized")
     }
     
     required init?(coder: NSCoder) {

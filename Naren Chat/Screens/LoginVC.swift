@@ -31,6 +31,11 @@ class LoginVC: NCLoadingVC {
         createDismissKeyboardTapGesture()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     private func configureUI() {
         view.addSubViews(loginView,signupView)
 
@@ -46,6 +51,10 @@ class LoginVC: NCLoadingVC {
     private func createDismissKeyboardTapGesture() {
         let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tap)
+    }
+    
+    deinit {
+        print("LoginVC deinitialized")
     }
 }
 

@@ -26,6 +26,10 @@ class SettingsOptionTableViewCell : UITableViewCell {
         textLabel?.text = type.rawValue
     }
     
+    deinit {
+        print("SettingsOptionTableViewCell deinitialized")
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -13,10 +13,6 @@ class ContactsUtils {
     
     var friendList : [UserData] = []
     
-//    func addContact(newContact: UserData) {
-//        friendList.append(newContact)
-//    }
-//
     func fetchFriendsList(completed: @escaping (Result<Bool,NCError>) -> Void) {
         guard let url = URL(string: NCAPI.getAPI(for: .friendList)), let token = PersistenceManager.token else {
             completed(.failure(.invalidToken))
@@ -41,6 +37,26 @@ class ContactsUtils {
                 completed(.failure(error))
             }
         }
+    }
+    
+    func updateContactStatus(with userDetail: UserStatusDetail) {
+        guard let contact = friendList.filter({$0._id == userDetail.id}).first else { return }
+        switch userDetail.status {
+        case "online":
+            contact.isOnline = true
+        default:
+            contact.lastOnline = userDetail.lastOnline
+            contact.isOnline = false
+        }
+    }
+    
+    func getSenderContact(for chat: Chat) -> UserData? {
+        guard let contact = friendList.filter({$0._id == chat.getSender()?._id}).first else { return nil }
+        return contact
+    }
+    
+    func reset() {
+        friendList = []
     }
     
 }

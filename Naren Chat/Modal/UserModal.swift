@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct UserData : Codable, Hashable {
+class UserData : Codable, Hashable {
+    
     var id              : String?
     var _id             : String?
     var userName        : String
@@ -17,4 +18,18 @@ struct UserData : Codable, Hashable {
     var unreadChats     : Int?
     var joinedTime      : Double?
     var lastOnline      : Double
+    var isOnline        : Bool?
+    
+    static func == (lhs: UserData, rhs: UserData) -> Bool {
+        return lhs._id == rhs._id && lhs.id == rhs.id && lhs.userName == rhs.userName && lhs.emailId == rhs.emailId && lhs.imgUrl == rhs.imgUrl && lhs.joinedTime == rhs.joinedTime
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(_id)
+        hasher.combine(id)
+        hasher.combine(userName)
+        hasher.combine(emailId)
+        hasher.combine(imgUrl)
+        hasher.combine(joinedTime)
+    }
 }

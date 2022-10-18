@@ -9,9 +9,9 @@ import Foundation
 
 
 struct MessagesOrderedData {
-    let sectionData : [String: [Message]]
-    let sectionOrder : [String]
-    let hasMore : Bool
+    var sectionData : [String: [Message]]
+    var sectionOrder : [String]
+    var hasMore : Bool
     
     init(sectionData: [String: [Message]] = [:], sectionOrder: [String] = [], hasMore: Bool = true) {
         self.sectionData = sectionData
@@ -37,7 +37,7 @@ class Message : Codable, Hashable {
     let text        : String?
     let time        : Double?
     let isDelivered : Bool?
-    let isRead      : Bool?
+    var isRead      : Bool?
     let type        : String?
     
     init(_id: String? = nil, senderId: String? = nil, text: String? = nil, time: Double? = nil, isDelivered: Bool? = nil, isRead: Bool? = nil, type: String? = nil) {

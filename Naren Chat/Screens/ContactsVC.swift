@@ -54,6 +54,7 @@ class ContactsVC: NCLoadingVC {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+        print("ContactsVC deinitalized")
     }
     
     private func configureNavigationBar() {

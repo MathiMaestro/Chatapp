@@ -48,6 +48,7 @@ class ChatListVC: NCLoadingVC {
         tabBarController?.tabBar.isHidden                       = false
         navigationController?.navigationBar.prefersLargeTitles  = true
         if !isFirstTime {
+            updateChatList()
             updateDatasForNewData()
         }
         isFirstTime = false
@@ -55,6 +56,7 @@ class ChatListVC: NCLoadingVC {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+        print("ChatListVC deinitialized")
     }
 }
 
@@ -107,6 +109,14 @@ extension ChatListVC {
         chatList = ChatUtils.shared.chatList
         if isSearchEnabled {
             searchChatList = chatList.filter({($0.getSender()?.userName ?? "").lowercased().contains(searchBarText.lowercased())})
+            updateView(chatList: searchChatList)
+        } else {
+            updateView(chatList: chatList)
+        }
+    }
+    
+    private func updateViewWithNewData() {
+        if isSearchEnabled {
             updateView(chatList: searchChatList)
         } else {
             updateView(chatList: chatList)
@@ -175,6 +185,7 @@ extension ChatListVC {
     private func configureNotificationObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(newMessageArrived), name: NotificationObserverName.newMessageKey, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(configureTyping(notification:)), name: NotificationObserverName.messageTypingKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(configureRead(notification:)), name: NotificationObserverName.sentMessageReadKey, object: nil)
     }
     
     @objc func newMessageArrived(notification: NSNotification) {
@@ -190,19 +201,32 @@ extension ChatListVC {
     
     private func updateDataForNewMessage(chatId: String, message : Message, isSearch : Bool) {
         let list = isSearch ? searchChatList : chatList
-        guard var chat      = list.filter({$0._id == chatId}).first, let index = list.firstIndex(of: chat) else {
-            updateDatasForNewData()
+        guard var chat = list.filter({$0._id == chatId}).first, let index = list.firstIndex(of: chat) else {
+            updateViewWithNewData()
             return
         }
         let indexPath       = IndexPath(item: index, section: 0)
         if index == 0, let cell = tableView.cellForRow(at: indexPath), tableView.visibleCells.contains(cell), let chatCell = cell as? ChatListTableViewCell {
+            chat.updateLastMessage(message: message)
             chatCell.updateViewForNewMessage(for: chat)
             updateChatList()
         } else {
-            updateDatasForNewData()
+            updateChatList()
+            updateViewWithNewData()
         }
     }
     
+    @objc func configureRead(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,let chatId = userInfo["chat_id"] as? String else {
+            return
+        }
+        updateChatList()
+        let list        = isSearchEnabled ? searchChatList : chatList
+        guard let chat  = list.filter({$0._id == chatId}).first, let index = list.firstIndex(of: chat) else { return }
+        let indexPath   = IndexPath(item: index, section: 0)
+        guard let cell  = tableView.cellForRow(at: indexPath), tableView.visibleCells.contains(cell), let chatCell = cell as? ChatListTableViewCell else { return }
+        chatCell.updateSentMessageRead(for: chat)
+    }
     
     @objc func configureTyping(notification: NSNotification) {
         guard let userInfo = notification.userInfo,let chatId = userInfo["chat_id"] as? String else {

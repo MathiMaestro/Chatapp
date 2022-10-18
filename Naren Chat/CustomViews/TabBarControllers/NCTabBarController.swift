@@ -15,6 +15,10 @@ class NCTabBarController: UITabBarController {
         viewControllers     = [createChatListVC(),createContactsVC(),createSettingsVC()]
     }
     
+    deinit {
+        print("NCTabBarController deinitialized")
+    }
+    
     private func createChatListVC() -> UINavigationController {
         let chatListVC          = ChatListVC()
         chatListVC.tabBarItem   = UITabBarItem(title: "Chats", image: UIImage(systemName: "message"), tag: 0)

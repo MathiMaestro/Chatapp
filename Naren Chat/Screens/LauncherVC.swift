@@ -36,6 +36,7 @@ class LauncherVC: NCLoadingVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        navigationController?.isNavigationBarHidden = true
         setupView()
         getUserDetails()
     }
@@ -126,5 +127,9 @@ class LauncherVC: NCLoadingVC {
             guard let window = UIApplication.shared.windows.filter({$0.isKeyWindow}).first else { return }
             window.rootViewController = UINavigationController(rootViewController: LoginVC(title: title, message: message))
         }
+    }
+    
+    deinit {
+        print("LauncherVC deinitalized")
     }
 }
