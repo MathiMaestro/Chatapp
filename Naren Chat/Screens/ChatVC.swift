@@ -187,7 +187,7 @@ extension ChatVC {
     @objc func handleActiveStatus() {
         guard let contact = ContactsUtils.shared.getSenderContact(for: chat)  else { return }
 
-        if contact.isOnline ?? false {
+        if contact.status == "online" {
             navBarTitleView?.updateStatus(type: .online)
             currentStatus = .online
         } else {
@@ -222,7 +222,17 @@ extension ChatVC {
 
 extension ChatVC : NCChatTextViewToViewProtocal {
     
-    func sendButtonTaped() {
-        
+    func sendButtonTaped(with text: String) {
+        var messageDict : [String:Any]  = [:]
+        messageDict["temp_id"]          = "\(arc4random())"
+        messageDict["text"]             = text
+        MessageUtils.shared.updateMessage(with: messageDict) { result in
+            switch result {
+            case .success(_):
+                break
+            case .failure(let error):
+                self.presentNCAlertViewInMainThread(title: "Oops..", message: error.rawValue, buttonTitle: "Ok")
+            }
+        }
     }
 }

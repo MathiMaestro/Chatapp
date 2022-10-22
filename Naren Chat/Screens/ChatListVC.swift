@@ -78,9 +78,9 @@ extension ChatListVC {
     
     private func configureUI() {
         view.backgroundColor    = .systemBackground
+        view.addSubview(tableView)
         tableView.frame         = view.bounds
         tableView.delegate      = self
-        view.addSubview(tableView)
     }
 }
 

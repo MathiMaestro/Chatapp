@@ -8,7 +8,7 @@
 import UIKit
 
 protocol NCChatTextViewToViewProtocal {
-    func sendButtonTaped()
+    func sendButtonTaped(with text: String)
 }
 
 class NCChatTextView : UIView {
@@ -29,6 +29,17 @@ class NCChatTextView : UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
+        configureProperties()
+    }
+    
+    private func configureProperties() {
+        sendButton.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc func sendButtonTapped() {
+        guard let text = chatTextField.text else { return }
+        delegate?.sendButtonTaped(with: text)
+        chatTextField.text = ""
     }
     
     private func configureUI() {

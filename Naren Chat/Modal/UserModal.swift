@@ -18,7 +18,7 @@ class UserData : Codable, Hashable {
     var unreadChats     : Int?
     var joinedTime      : Double?
     var lastOnline      : Double
-    var isOnline        : Bool?
+    var status          : String
     
     static func == (lhs: UserData, rhs: UserData) -> Bool {
         return lhs._id == rhs._id && lhs.id == rhs.id && lhs.userName == rhs.userName && lhs.emailId == rhs.emailId && lhs.imgUrl == rhs.imgUrl && lhs.joinedTime == rhs.joinedTime

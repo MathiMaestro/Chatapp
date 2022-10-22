@@ -41,13 +41,8 @@ class ContactsUtils {
     
     func updateContactStatus(with userDetail: UserStatusDetail) {
         guard let contact = friendList.filter({$0._id == userDetail.id}).first else { return }
-        switch userDetail.status {
-        case "online":
-            contact.isOnline = true
-        default:
-            contact.lastOnline = userDetail.lastOnline
-            contact.isOnline = false
-        }
+        contact.status = userDetail.status
+        contact.lastOnline = userDetail.lastOnline
     }
     
     func getSenderContact(for chat: Chat) -> UserData? {

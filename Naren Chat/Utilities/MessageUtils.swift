@@ -47,6 +47,22 @@ class MessageUtils {
         }
     }
     
+    func updateMessage(with messageDict: [String:Any], completed: @escaping (Result<Bool,NCError>) -> Void) {
+        guard let url = URL(string: NCAPI.getAPI(for: .sendMessage(chatId: chatId))), let token = PersistenceManager.token else {
+            completed(.failure(.invalidToken))
+            return
+        }
+        let bodyData = NCNetworkUtils.getData(from: messageDict)
+        NetworkManager.shared.makeRequest(with: url, httpMethod: .post, body: bodyData, token: token) { result in
+            switch result {
+            case .success(_):
+                completed(.success(true))
+            case .failure(let error):
+                completed(.failure(error))
+            }
+        }
+    }
+    
     private func readUpdate(chatId: String) {
         guard !unreadMessages.isEmpty else { return }
         updateMessageAsRead()
@@ -83,16 +99,30 @@ class MessageUtils {
         }
     }
     
-    func updateNewMessage(with message: Message) {
-        let newMessagesection = "New messages"
-        if !messageData.sectionOrder.contains(newMessagesection) {
-            messageData.sectionOrder.append(newMessagesection)
-        }
-        if var messages = messageData.sectionData[newMessagesection] {
-            messages.append(message)
-            messageData.sectionData[newMessagesection] = messages
+    func updateNewMessage(with message: Message, isSent: Bool) {
+        if isSent {
+            if let dateString = message.time?.convertToDate()?.convertToDateString() {
+                if !messageData.sectionOrder.contains(dateString) {
+                    messageData.sectionOrder.append(dateString)
+                }
+                if var messages = messageData.sectionData[dateString] {
+                    messages.append(message)
+                    messageData.sectionData[dateString] = messages
+                } else {
+                    messageData.sectionData[dateString] = [message]
+                }
+            }
         } else {
-            messageData.sectionData[newMessagesection] = [message]
+            let newMessagesection = "New messages"
+            if !messageData.sectionOrder.contains(newMessagesection) {
+                messageData.sectionOrder.append(newMessagesection)
+            }
+            if var messages = messageData.sectionData[newMessagesection] {
+                messages.append(message)
+                messageData.sectionData[newMessagesection] = messages
+            } else {
+                messageData.sectionData[newMessagesection] = [message]
+            }
         }
         messages.insert(message, at: 0)
     }
@@ -132,7 +162,7 @@ class MessageUtils {
     }
     
     
-    func removeNewMessages(with message: Message) {
+    func removeNewMessages() {
         guard let messages = messageData.sectionData["New messages"], !messages.isEmpty else { return }
         for message in messages {
             if let dateString = message.time?.convertToDate()?.convertToDateString() {
@@ -147,16 +177,21 @@ class MessageUtils {
                 }
             }
         }
+        messageData.sectionOrder.removeLast()
         messageData.sectionData["New messages"] = nil
     }
     
     func updateMessagesFor(chatId: String, message: Message) {
         guard self.chatId == chatId else { return }
-        removeNewMessages(with: message)
-        updateNewMessage(with: message)
-        unreadMessages = []
-        updateMessageAsRead()
-        ChatUtils.shared.updatelastMessageAsRead(for: chatId)
+        removeNewMessages()
+        if message.senderId != UserDetailUtil.shared.userData?.id {
+            updateNewMessage(with: message, isSent: false)
+            unreadMessages = []
+            updateMessageAsRead()
+            ChatUtils.shared.updatelastMessageAsRead(for: chatId)
+        } else {
+            updateNewMessage(with: message, isSent: true)
+        }
     }
     
     func reset() {
