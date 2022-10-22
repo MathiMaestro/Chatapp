@@ -27,6 +27,7 @@ class ChatVC: NCLoadingVC {
         
         return tableView
     }()
+    private var isFetching: Bool = false
     
     init(chat: Chat) {
         self.chat     = chat
@@ -80,7 +81,14 @@ extension ChatVC {
         taxtFieldBottomAnchor   = chatTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
         taxtFieldBottomAnchor?.isActive = true
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tableTapped))
+        tableView.addGestureRecognizer(tap)
+        
         configureDataSource()
+    }
+    
+    @objc func tableTapped() {
+        chatTextView.endEditing(force: true)
     }
     
     private func configureNavBar() {
@@ -111,10 +119,10 @@ extension ChatVC {
     }
     
     private func getChatData() {
+        isFetching = true
         MessageUtils.shared.getMessages(chatId: chat._id, limit: 100) { [unowned self] result in
             switch result {
             case .success(_):
-                self.dismissLoadingView()
                 self.updateView()
             case .failure(let error):
                 self.presentNCAlertViewInMainThread(title: "Oops..", message: error.rawValue, buttonTitle: "Ok")
@@ -163,14 +171,21 @@ extension ChatVC : UITableViewDelegate {
             }
         }
         DispatchQueue.main.async { self.dataSource?.apply(snapShot, animatingDifferences: false, completion: {
-            self.scrollToLast()
+            self.scrollToLast(isFromKeyBoard: false)
+            self.dismissLoadingView()
+            self.isFetching = false
         }) }
     }
     
-    private func scrollToLast() {
+    private func scrollToLast(isFromKeyBoard: Bool) {
         let messageData = MessageUtils.shared.messageData
         guard let lastSectionDate = messageData.sectionOrder.last,let lastSection = messageData.sectionData[lastSectionDate], lastSection.count > 0, messageData.sectionOrder.count > 0 else { return }
-        self.tableView.scrollToRow(at: IndexPath(row: (lastSection.count - 1), section: (messageData.sectionOrder.count - 1)), at: .bottom, animated: false)
+        let indexPath = IndexPath(row: (lastSection.count - 1), section: (messageData.sectionOrder.count - 1))
+        if isFromKeyBoard, let _ = tableView.cellForRow(at: indexPath) {
+            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+        } else if !isFromKeyBoard {
+            self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+        }
     }
 }
 
@@ -204,12 +219,13 @@ extension ChatVC {
     
     @objc func keyboardHandling(notification: Notification) {
         guard let userInfo = notification.userInfo, let frame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        guard !isFetching else { return }
         let isKeyBoardShowing = notification.name == UIResponder.keyboardWillShowNotification
         taxtFieldBottomAnchor?.constant = isKeyBoardShowing ? -frame.height : 0
         
         UIView.animate(withDuration: 0, delay: 0, options: .curveEaseOut) {
             self.view.layoutIfNeeded()
-            self.scrollToLast()
+            self.scrollToLast(isFromKeyBoard: true)
         }
     }
     
