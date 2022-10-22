@@ -16,7 +16,116 @@ class MessageUtils {
     var unreadMessages      = [Message]()
     private var chatId      = ""
     
-    var orderedMessageData: MessagesOrderedData = MessagesOrderedData()
+    
+    private func readUpdate(chatId: String) {
+        guard !unreadMessages.isEmpty else { return }
+        updateMessageAsRead()
+        ChatUtils.shared.updatelastMessageAsRead(for: chatId)
+    }
+    
+    private func prepareMessageData(messagesData: MessagesData) {
+        var messageData     = getOrderedMessageData(messages: messagesData.messages)
+        messageData.hasMore = messagesData.hasMore
+        self.messageData    = messageData
+    }
+    
+    private func setUnreadMessagesAsRead() {
+        updateMessageAsRead()
+        for message in unreadMessages {
+            message.isRead = true
+        }
+    }
+    
+    private func updateNewMessage(with message: Message, isSent: Bool) {
+        if isSent {
+            if let dateString = message.time?.convertToDate()?.convertToDateString() {
+                if !messageData.sectionOrder.contains(dateString) {
+                    messageData.sectionOrder.append(dateString)
+                }
+                if var messages = messageData.sectionData[dateString] {
+                    messages.append(message)
+                    messageData.sectionData[dateString] = messages
+                } else {
+                    messageData.sectionData[dateString] = [message]
+                }
+            }
+        } else {
+            let newMessagesection = "New messages"
+            if !messageData.sectionOrder.contains(newMessagesection) {
+                messageData.sectionOrder.append(newMessagesection)
+            }
+            if var messages = messageData.sectionData[newMessagesection] {
+                messages.append(message)
+                messageData.sectionData[newMessagesection] = messages
+            } else {
+                messageData.sectionData[newMessagesection] = [message]
+            }
+        }
+        messages.insert(message, at: 0)
+    }
+    
+    private func getOrderedMessageData(messages: [Message]) -> MessagesOrderedData {
+        var sectionOrder : [String]     = []
+        var sectionData : sectionData   = [:]
+        
+        for message in messages.reversed() {
+            if !(message.isRead ?? true) && message.senderId != UserDetailUtil.shared.userData?.id {
+                let newMessagesection = "New messages"
+                if !sectionOrder.contains(newMessagesection) {
+                    sectionOrder.append(newMessagesection)
+                }
+                if var messages = sectionData[newMessagesection] {
+                    messages.append(message)
+                    sectionData[newMessagesection] = messages
+                } else {
+                    sectionData[newMessagesection] = [message]
+                }
+                unreadMessages.append(message)
+            } else {
+                if let dateString = message.time?.convertToDate()?.convertToDateString() {
+                    if !sectionOrder.contains(dateString) {
+                        sectionOrder.append(dateString)
+                    }
+                    if var messages = sectionData[dateString] {
+                        messages.append(message)
+                        sectionData[dateString] = messages
+                    } else {
+                        sectionData[dateString] = [message]
+                    }
+                }
+            }
+        }
+        return MessagesOrderedData(sectionData: sectionData, sectionOrder: sectionOrder)
+    }
+    
+    
+    private func removeNewMessages() {
+        guard let messages = messageData.sectionData["New messages"], !messages.isEmpty else { return }
+        for message in messages {
+            if let dateString = message.time?.convertToDate()?.convertToDateString() {
+                if !messageData.sectionOrder.contains(dateString) {
+                    messageData.sectionOrder.append(dateString)
+                }
+                if var messages = messageData.sectionData[dateString] {
+                    messages.append(message)
+                    messageData.sectionData[dateString] = messages
+                } else {
+                    messageData.sectionData[dateString] = [message]
+                }
+            }
+        }
+        messageData.sectionOrder.removeLast()
+        messageData.sectionData["New messages"] = nil
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+}
+
+//MARK: Network calls
+extension MessageUtils {
     
     func getMessages(chatId: String, limit: Int, completed: @escaping (Result<Bool,NCError>) -> Void) {
         guard let url = URL(string: NCAPI.getAPI(for: .messages(chatId: chatId, limit: limit))), let token = PersistenceManager.token else {
@@ -63,12 +172,6 @@ class MessageUtils {
         }
     }
     
-    private func readUpdate(chatId: String) {
-        guard !unreadMessages.isEmpty else { return }
-        updateMessageAsRead()
-        ChatUtils.shared.updatelastMessageAsRead(for: chatId)
-    }
-    
     private func updateMessageAsRead() {
         guard let url = URL(string: NCAPI.getAPI(for: .messageRead(chatId: chatId))), let token = PersistenceManager.token else {
             print(NCError.invalidToken.rawValue)
@@ -83,103 +186,10 @@ class MessageUtils {
             }
         }
     }
-    
-    private func prepareMessageData(messagesData: MessagesData) {
-        
-        var messageData     = getOrderedMessageData(messages: messagesData.messages)
-        messageData.hasMore = messagesData.hasMore
-        self.messageData    = messageData
-    }
-    
-    private func setUnreadMessagesAsRead() {
-        updateMessageAsRead()
-        for message in unreadMessages {
-            message.isRead = true
-            
-        }
-    }
-    
-    func updateNewMessage(with message: Message, isSent: Bool) {
-        if isSent {
-            if let dateString = message.time?.convertToDate()?.convertToDateString() {
-                if !messageData.sectionOrder.contains(dateString) {
-                    messageData.sectionOrder.append(dateString)
-                }
-                if var messages = messageData.sectionData[dateString] {
-                    messages.append(message)
-                    messageData.sectionData[dateString] = messages
-                } else {
-                    messageData.sectionData[dateString] = [message]
-                }
-            }
-        } else {
-            let newMessagesection = "New messages"
-            if !messageData.sectionOrder.contains(newMessagesection) {
-                messageData.sectionOrder.append(newMessagesection)
-            }
-            if var messages = messageData.sectionData[newMessagesection] {
-                messages.append(message)
-                messageData.sectionData[newMessagesection] = messages
-            } else {
-                messageData.sectionData[newMessagesection] = [message]
-            }
-        }
-        messages.insert(message, at: 0)
-    }
-    
-    func getOrderedMessageData(messages: [Message]) -> MessagesOrderedData {
-        var sectionOrder : [String]     = []
-        var sectionData : sectionData   = [:]
-        
-        for message in messages.reversed() {
-            if !(message.isRead ?? true) && message.senderId != UserDetailUtil.shared.userData?.id {
-                let newMessagesection = "New messages"
-                if !sectionOrder.contains(newMessagesection) {
-                    sectionOrder.append(newMessagesection)
-                }
-                if var messages = sectionData[newMessagesection] {
-                    messages.append(message)
-                    sectionData[newMessagesection] = messages
-                } else {
-                    sectionData[newMessagesection] = [message]
-                }
-                unreadMessages.append(message)
-            } else {
-                if let dateString = message.time?.convertToDate()?.convertToDateString() {
-                    if !sectionOrder.contains(dateString) {
-                        sectionOrder.append(dateString)
-                    }
-                    if var messages = sectionData[dateString] {
-                        messages.append(message)
-                        sectionData[dateString] = messages
-                    } else {
-                        sectionData[dateString] = [message]
-                    }
-                }
-            }
-        }
-        return MessagesOrderedData(sectionData: sectionData, sectionOrder: sectionOrder)
-    }
-    
-    
-    func removeNewMessages() {
-        guard let messages = messageData.sectionData["New messages"], !messages.isEmpty else { return }
-        for message in messages {
-            if let dateString = message.time?.convertToDate()?.convertToDateString() {
-                if !messageData.sectionOrder.contains(dateString) {
-                    messageData.sectionOrder.append(dateString)
-                }
-                if var messages = messageData.sectionData[dateString] {
-                    messages.append(message)
-                    messageData.sectionData[dateString] = messages
-                } else {
-                    messageData.sectionData[dateString] = [message]
-                }
-            }
-        }
-        messageData.sectionOrder.removeLast()
-        messageData.sectionData["New messages"] = nil
-    }
+}
+
+//MARK: accessible from other classes
+extension MessageUtils {
     
     func updateMessagesFor(chatId: String, message: Message) {
         guard self.chatId == chatId else { return }
@@ -201,9 +211,4 @@ class MessageUtils {
         chatId          = ""
         NotificationCenter.default.removeObserver(self)
     }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
 }

@@ -17,7 +17,7 @@ class SettingsOptionTableViewCell : UITableViewCell {
         configureView()
     }
     
-    func configureView() {
+    private func configureView() {
         accessoryType   = .disclosureIndicator
         selectionStyle  = .none
     }

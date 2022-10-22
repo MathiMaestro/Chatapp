@@ -15,14 +15,14 @@ class ChatViewTaleViewCell : UITableViewCell {
     private let messageLabel    = NCBodyLabel(textColor: .label, textAlignment: .left)
     private let timeLabel       = NCBodyLabel(textColor: .secondaryLabel, textAlignment: .right, font: .preferredFont(forTextStyle: .footnote))
     
-    let containerView : UIView = {
+    private let containerView : UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    var messageLabelLeadingAnchor : NSLayoutConstraint?
-    var messageLabelTrailingAnchor : NSLayoutConstraint?
+    private var messageLabelLeadingAnchor : NSLayoutConstraint?
+    private var messageLabelTrailingAnchor : NSLayoutConstraint?
     
     override func prepareForReuse() {
         super.prepareForReuse()

@@ -7,23 +7,6 @@
 
 import SocketIO
 
-enum MessageType {
-    case typing
-    case newMessage
-    case status
-    case newChat
-    case sentMessageRead
-    case none
-}
-
-enum NotificationObserverName {
-    static let newMessageKey            = Notification.Name("newMessageKey")
-    static let newChatKey               = Notification.Name("newChatKey")
-    static let messageTypingKey         = Notification.Name("messageTypingKey")
-    static let activeStatusKey          = Notification.Name("activeStatusKey")
-    static let sentMessageReadKey       = Notification.Name("messageReadKey")
-}
-
 class IOSocketManager {
 
     static let shared = IOSocketManager()
@@ -150,9 +133,3 @@ class IOSocketManager {
     }
 }
 
-
-struct UserStatusDetail : Codable {
-    let status: String
-    let lastOnline: Double
-    let id: String
-}

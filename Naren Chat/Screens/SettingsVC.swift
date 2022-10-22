@@ -97,14 +97,18 @@ extension SettingsVC : UITableViewDelegate, UITableViewDataSource {
                 break
         }
     }
+}
+
+// MARK: Account deletion methods
+extension SettingsVC {
     
     private func presentDeleteAlertVC() {
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [unowned self] _ in
             self.showLoadingView()
             self.deleteAccount()
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        let alertVC = UIAlertController(title: "Delete Account", message: "Are you sure. Do you want to delete this account?", preferredStyle: .alert)
+        let cancelAction    = UIAlertAction(title: "Cancel", style: .cancel)
+        let alertVC         = UIAlertController(title: "Delete Account", message: "Are you sure. Do you want to delete this account?", preferredStyle: .alert)
         alertVC.addAction(cancelAction)
         alertVC.addAction(deleteAction)
         present(alertVC, animated: true)

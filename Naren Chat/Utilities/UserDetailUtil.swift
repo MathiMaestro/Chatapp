@@ -14,7 +14,7 @@ class UserDetailUtil {
     let cache = NSCache<NSString,UIImage>()
     
     func removeUserData() {
-        PersistenceManager.token    = nil
+        PersistenceManager.token = nil
         reset()
         ChatUtils.shared.reset()
         ContactsUtils.shared.reset()
@@ -45,3 +45,8 @@ class UserDetailUtil {
     
 }
 
+struct UserStatusDetail : Codable {
+    let status: String
+    let lastOnline: Double
+    let id: String
+}

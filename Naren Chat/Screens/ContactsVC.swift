@@ -22,7 +22,6 @@ class ContactsVC: NCLoadingVC {
         return tableView
     }()
     
-//    private var contactList : [UserData]    = []
     private var searchResult : [UserData]   = []
     private var isSearchEnabled : Bool      = false
     private var searchText : String         = ""
@@ -44,18 +43,14 @@ class ContactsVC: NCLoadingVC {
         tabBarController?.tabBar.isHidden                       = false
     }
     
-    private func configureNotificationObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateContact(notification:)), name: NotificationObserverName.newChatKey, object: nil)
-    }
-    
-    @objc func updateContact(notification: NSNotification) {
-        updateView(on: ContactsUtils.shared.friendList)
-    }
-    
     deinit {
         NotificationCenter.default.removeObserver(self)
         print("ContactsVC deinitalized")
     }
+}
+
+//MARK: View configuration
+extension ContactsVC {
     
     private func configureNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -126,5 +121,16 @@ extension ContactsVC : UISearchResultsUpdating {
         self.searchText = searchText
         searchResult = ContactsUtils.shared.friendList.filter({$0.userName.lowercased().contains(searchText.lowercased())})
         updateView(on: searchResult)
+    }
+}
+
+extension ContactsVC {
+    
+    private func configureNotificationObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateContact(notification:)), name: NotificationObserverName.newChatKey, object: nil)
+    }
+    
+    @objc func updateContact(notification: NSNotification) {
+        updateView(on: ContactsUtils.shared.friendList)
     }
 }

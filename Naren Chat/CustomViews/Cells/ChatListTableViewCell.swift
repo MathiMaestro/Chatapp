@@ -85,9 +85,21 @@ class ChatListTableViewCell: UITableViewCell {
         sentImageView.isHidden                  = true
     }
     
+    deinit {
+        print("ChatListTableViewCell deinitialized")
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+//MARK: View updates
+extension ChatListTableViewCell {
+    
     func updateView(with chat: Chat) {
         guard let sender = chat.getSender() else { return }
-        timeLabel.text              = chat.lastMessage.time?.convertToDate()?.convertToString()
+        timeLabel.text              = chat.lastMessage.time?.convertToDate()?.convertToShortString()
         unReadChatCountLabel.text   = chat.unreadCount > 0 ? "\(chat.unreadCount)" : nil
         userNameLabel.text          = sender.userName
         lastMessageLabel.text       = chat.lastMessage.text
@@ -104,7 +116,7 @@ class ChatListTableViewCell: UITableViewCell {
     }
     
     func updateViewForNewMessage(for chat: Chat) {
-        timeLabel.text              = chat.lastMessage.time?.convertToDate()?.convertToString()
+        timeLabel.text              = chat.lastMessage.time?.convertToDate()?.convertToShortString()
         unReadChatCountLabel.text   = chat.unreadCount > 0 ? "\(chat.unreadCount)" : nil
         lastMessageLabel.text       = chat.lastMessage.text
         sentImageView.isHidden      = chat.lastMessage.isReceived() ? true : false
@@ -113,19 +125,11 @@ class ChatListTableViewCell: UITableViewCell {
     }
     
     func updateSentMessageRead(for chat: Chat) {
-        sentImageView.isHidden      = chat.lastMessage.isReceived() ? true : false
+        sentImageView.isHidden = chat.lastMessage.isReceived() ? true : false
         sentImageView.updateImage(IsRead: chat.lastMessage.isRead ?? false)
     }
     
     func updateRecievedMessageRead(for chat: Chat) {
-        unReadChatCountLabel.text   = chat.unreadCount > 0 ? "\(chat.unreadCount)" : nil
-    }
-    
-    deinit {
-        print("ChatListTableViewCell deinitialized")
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        unReadChatCountLabel.text = chat.unreadCount > 0 ? "\(chat.unreadCount)" : nil
     }
 }

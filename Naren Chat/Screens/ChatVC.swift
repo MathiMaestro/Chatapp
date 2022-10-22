@@ -207,7 +207,7 @@ extension ChatVC {
             navBarTitleView?.updateStatus(type: .online)
             currentStatus = .online
         } else {
-            let lastActiveTime = contact.lastOnline.convertToDate()?.convertToString() ?? ""
+            let lastActiveTime = contact.lastOnline.convertToDate()?.convertToShortString() ?? ""
             navBarTitleView?.updateStatus(type: .offline(time: lastActiveTime))
             currentStatus = .offline(time: lastActiveTime)
         }

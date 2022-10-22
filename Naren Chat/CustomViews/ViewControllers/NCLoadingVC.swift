@@ -9,7 +9,7 @@ import UIKit
 
 class NCLoadingVC: UIViewController {
 
-    var containerView: UIView?
+    private var containerView: UIView?
 
     func showLoadingView() {
         containerView = UIView(frame: view.bounds)
