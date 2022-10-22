@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol NCChatTextViewToViewProtocal {
+protocol NCChatTextViewToViewProtocol: AnyObject {
     func sendButtonTaped(with text: String)
 }
 
 class NCChatTextView : UIView {
     
-    var delegate: NCChatTextViewToViewProtocal?
+    weak var delegate: NCChatTextViewToViewProtocol?
     
     private let sendButton : UIButton =  {
         let button = UIButton()

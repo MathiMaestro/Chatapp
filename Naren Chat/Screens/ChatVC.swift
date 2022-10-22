@@ -50,6 +50,7 @@ class ChatVC: NCLoadingVC {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+        print("ChatVC deinitialised")
     }
     
     required init?(coder: NSCoder) {
@@ -236,7 +237,7 @@ extension ChatVC {
     }
 }
 
-extension ChatVC : NCChatTextViewToViewProtocal {
+extension ChatVC : NCChatTextViewToViewProtocol {
     
     func sendButtonTaped(with text: String) {
         var messageDict : [String:Any]  = [:]
