@@ -19,6 +19,7 @@ enum APIType {
     case messages(chatId: String,limit: Int)
     case messageRead(chatId: String)
     case sendMessage(chatId: String)
+    case updateUserProfile
 }
 
 class NCAPI {
@@ -52,6 +53,8 @@ class NCAPI {
             api += "/chats/\(chatId)/read"
         case .sendMessage(let chatId):
             api += "/chats/\(chatId)/messages"
+        case .updateUserProfile:
+            api += "/user/upload"
         }
         
         return api

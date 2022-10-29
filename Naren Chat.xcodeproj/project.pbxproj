@@ -43,6 +43,7 @@
 		F44555E928CCCF2100C56D82 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555E828CCCF2100C56D82 /* LoginVC.swift */; };
 		F44555ED28CCD7C700C56D82 /* NCTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44555EC28CCD7C700C56D82 /* NCTextField.swift */; };
 		F4522AB328E4CE36000ECD2F /* ChatUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4522AB228E4CE36000ECD2F /* ChatUtils.swift */; };
+		F45DAC2B290DCB6200370552 /* ImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45DAC2A290DCB6200370552 /* ImagePickerController.swift */; };
 		F475F72B28E4A49700DFB022 /* ChatListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F475F72A28E4A49700DFB022 /* ChatListTableViewCell.swift */; };
 		F4ABD2EC28E4AC40003EB5EE /* ChatListModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ABD2EB28E4AC40003EB5EE /* ChatListModal.swift */; };
 		F4C7114328E8B53D0010E33C /* NCMsgCountLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C7114228E8B53D0010E33C /* NCMsgCountLabel.swift */; };
@@ -103,6 +104,7 @@
 		F44555E828CCCF2100C56D82 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		F44555EC28CCD7C700C56D82 /* NCTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTextField.swift; sourceTree = "<group>"; };
 		F4522AB228E4CE36000ECD2F /* ChatUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUtils.swift; sourceTree = "<group>"; };
+		F45DAC2A290DCB6200370552 /* ImagePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerController.swift; sourceTree = "<group>"; };
 		F475F72A28E4A49700DFB022 /* ChatListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListTableViewCell.swift; sourceTree = "<group>"; };
 		F4ABD2EB28E4AC40003EB5EE /* ChatListModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListModal.swift; sourceTree = "<group>"; };
 		F4C7114228E8B53D0010E33C /* NCMsgCountLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMsgCountLabel.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 		F44555EA28CCD78900C56D82 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				F45DAC29290DCB4000370552 /* ImagePickerControllers */,
 				F42F255F28E786AB00E9130E /* ImageViews */,
 				F475F72928E4A40800DFB022 /* Cells */,
 				F4C9A2AE28E0EFC2007AE983 /* TabBarControllers */,
@@ -315,6 +318,14 @@
 				F44555EC28CCD7C700C56D82 /* NCTextField.swift */,
 			);
 			path = TextFields;
+			sourceTree = "<group>";
+		};
+		F45DAC29290DCB4000370552 /* ImagePickerControllers */ = {
+			isa = PBXGroup;
+			children = (
+				F45DAC2A290DCB6200370552 /* ImagePickerController.swift */,
+			);
+			path = ImagePickerControllers;
 			sourceTree = "<group>";
 		};
 		F475F72928E4A40800DFB022 /* Cells */ = {
@@ -458,6 +469,7 @@
 				F4CC427328EF719200A06DB5 /* MessageModal.swift in Sources */,
 				F42F256528E8911A00E9130E /* DoubleEntension.swift in Sources */,
 				F43C642D28D7FA3B00E62E43 /* NCNetwork.swift in Sources */,
+				F45DAC2B290DCB6200370552 /* ImagePickerController.swift in Sources */,
 				F40A601F28FCF235008990E1 /* NCImageView.swift in Sources */,
 				F40A968528F367A30059882A /* NCChatTextView.swift in Sources */,
 				F43C642528D6CC6100E62E43 /* NCLoadingVC.swift in Sources */,
@@ -634,7 +646,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = NQV5W84VJ3;
+				DEVELOPMENT_TEAM = 3QZ6UJB6QX;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Naren Chat/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -664,7 +676,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = NQV5W84VJ3;
+				DEVELOPMENT_TEAM = 3QZ6UJB6QX;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Naren Chat/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

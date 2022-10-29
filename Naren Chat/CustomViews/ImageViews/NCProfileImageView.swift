@@ -31,7 +31,7 @@ class NCProfileImageView: UIImageView {
             self.image = profileImage
         }
         
-        guard let url = URL(string: urlString) else { return }
+        guard let url = URL(string: NCAPI.baseURL + urlString) else { return }
         
         NetworkManager.shared.makeRequest(with: url, httpMethod: .get) { [unowned self] result in
             switch result {

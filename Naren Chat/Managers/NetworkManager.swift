@@ -11,8 +11,8 @@ import Foundation
 class NetworkManager {
     static let shared = NetworkManager()
     
-    func makeRequest(with url: URL, httpMethod: HttpMethod, body: Data? = nil, token: String? = nil, completed: @escaping (Result<Data,NCError>) -> Void) {
-        let urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: httpMethod, token: token, body: body)
+    func makeRequest(with url: URL, httpMethod: HttpMethod, body: Data? = nil, token: String? = nil, isMultiPortData: Bool = false, boundary: String = "", completed: @escaping (Result<Data,NCError>) -> Void) {
+        let urlRequest = NCNetworkUtils.createUrlRequest(for: url, httpMethod: httpMethod, token: token, body: body, isMultiPortData: isMultiPortData, boundary: boundary)
         
         let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             if let error = error {

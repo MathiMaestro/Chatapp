@@ -98,7 +98,7 @@ class ChatListTableViewCell: UITableViewCell {
 extension ChatListTableViewCell {
     
     func updateView(with chat: Chat) {
-        guard let sender = chat.getSender() else { return }
+        guard let sender = ContactsUtils.shared.getSenderContact(for: chat) else { return }
         timeLabel.text              = chat.lastMessage.time?.convertToDate()?.convertToShortString()
         unReadChatCountLabel.text   = chat.unreadCount > 0 ? "\(chat.unreadCount)" : nil
         userNameLabel.text          = sender.userName

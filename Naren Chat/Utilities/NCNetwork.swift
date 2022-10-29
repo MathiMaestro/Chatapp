@@ -22,7 +22,7 @@ enum NCNetworkUtils {
         return decoder
     }()
     
-    static func createUrlRequest(for url: URL, httpMethod: HttpMethod, token: String? = nil, body: Data? = nil) -> URLRequest {
+    static func createUrlRequest(for url: URL, httpMethod: HttpMethod, token: String? = nil, body: Data? = nil, isMultiPortData: Bool = false, boundary: String = "") -> URLRequest {
         var urlRequest              = URLRequest(url: url)
         urlRequest.httpMethod       = httpMethod.rawValue
         urlRequest.timeoutInterval  = 30
@@ -32,8 +32,14 @@ enum NCNetworkUtils {
         }
         
         if let body {
-            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            urlRequest.httpBody = body
+            if isMultiPortData {
+                urlRequest.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+                urlRequest.addValue("\(body.count)", forHTTPHeaderField: "content-length")
+                urlRequest.httpBody = body
+            } else {
+                urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                urlRequest.httpBody = body
+            }
         }
         
         return urlRequest

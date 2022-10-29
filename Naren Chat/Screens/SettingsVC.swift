@@ -76,7 +76,7 @@ extension SettingsVC : UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsUserTableViewCell.reusableId, for: indexPath) as? SettingsUserTableViewCell else {
                 return tableView.dequeueReusableCell(withIdentifier: SettingsUserTableViewCell.reusableId, for: indexPath)
             }
-            cell.delegate = self
+            cell.setDelegates(to: self)
             return cell
         }
         else {
@@ -133,6 +133,14 @@ extension SettingsVC {
 }
 
 extension SettingsVC : SettingsUserTableViewCellToView {
+    
+    func profileImageUpdated(with error: NCError?) {
+        if let _ = error {
+            presentNCAlertViewInMainThread(title: "Sorry..", message: "Something went wrong! Unable to update the profile pic", buttonTitle: "Ok")
+        } else {
+            presentNCAlertViewInMainThread(title: "Hurray..", message: "Profile pic updated successfully", buttonTitle: "Ok")
+        }
+    }
     
     func signoutTapped() {
         UserDetailUtil.shared.removeUserData()
